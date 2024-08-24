@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "665102315540",
+    "project_id": "dormlanders-fd518",
+    "storage_bucket": "dormlanders-fd518.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665102315540:android:9e9973d6966c62b17eb701",
+        "android_client_info": {
+          "package_name": "com.example.dormlanders"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsLXXsuSZSPst6BEyCga-9Pi71YQ43EE4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
