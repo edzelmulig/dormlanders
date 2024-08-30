@@ -413,7 +413,7 @@ class _ServiceProviderHomePageState extends State<ServiceProviderHomePage> {
                 return filteredAppointments.isEmpty
                     ? const NoAvailableData(
                         icon: Icons.calendar_month_rounded,
-                        text: "appointments",
+                        text: "reservations",
                       )
                     : ListView.builder(
                         padding: EdgeInsets.zero,
