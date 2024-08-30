@@ -12,6 +12,8 @@ class ProviderServiceCardClientSide extends StatelessWidget {
   final int discount;
   final String imageURL;
   final double price;
+  final int maximumTenants;
+  final int currentTenants;
   final String serviceDescription;
   final String serviceName;
   final String serviceType;
@@ -25,6 +27,8 @@ class ProviderServiceCardClientSide extends StatelessWidget {
     required this.discount,
     required this.imageURL,
     required this.price,
+    required this.maximumTenants,
+    required this.currentTenants,
     required this.serviceDescription,
     required this.serviceName,
     required this.serviceType,
@@ -93,6 +97,35 @@ class ProviderServiceCardClientSide extends StatelessWidget {
                   ),
                 ),
 
+                // SIZED BOX: SPACING
+                const SizedBox(height: 10),
+
+
+                Row(
+                  children: <Widget> [
+                    const Icon(
+                      Icons.person_pin_rounded,
+                      size: 22,
+                      color: Color(0xFF3C4D48),
+                    ),
+
+
+                    // SERVICE DESCRIPTION
+                    Text(
+                      "Current Number of Tenants: $currentTenants out of $maximumTenants",
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        height: 1.2,
+                        color: currentTenants == maximumTenants ? Colors.red : Colors.grey,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+
+
                 const SizedBox(height: 10),
 
                 // SERVICE PRICE
@@ -126,48 +159,46 @@ class ProviderServiceCardClientSide extends StatelessWidget {
                 const SizedBox(height: 5),
 
                 // APPOINTMENT BUTTON
-                availability
+                availability && currentTenants < maximumTenants
                     ? PrimaryCustomButton(
-                        buttonText: "Book Reservation",
-                        onPressed: () {
-                          navigateWithSlideFromRight(
-                            context,
-                            ClientAppointment(
-                              providerID: providerID,
-                              imageURL: imageURL,
-                              providerInfo: providerInfo,
-                              clientInfo: clientInfo,
-                              serviceName: serviceName,
-                              discountedPrice: discountedPrice,
-                              price: price,
-                              discount: discount,
-                              serviceType: serviceType,
-                            ),
-                            0.0,
-                            1.0,
-                          );
-                        },
-                        buttonHeight: 40,
-                        buttonColor: const Color(0xFF193147),
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                        fontColor: Colors.white,
-                        elevation: 0,
-                        borderRadius: 7,
-                      )
-                    : PrimaryCustomButton(
-                        buttonText: "Not Available",
-                        onPressed: () {},
-                        // This disables the button
-                        buttonHeight: 40,
-                        buttonColor: Colors.grey,
-                        // Change color to indicate disabled state
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                        fontColor: Colors.white,
-                        elevation: 0,
-                        borderRadius: 7,
+                  buttonText: "Book Reservation",
+                  onPressed: () {
+                    navigateWithSlideFromRight(
+                      context,
+                      ClientAppointment(
+                        providerID: providerID,
+                        imageURL: imageURL,
+                        providerInfo: providerInfo,
+                        clientInfo: clientInfo,
+                        serviceName: serviceName,
+                        discountedPrice: discountedPrice,
+                        price: price,
+                        discount: discount,
+                        serviceType: serviceType,
                       ),
+                      0.0,
+                      1.0,
+                    );
+                  },
+                  buttonHeight: 40,
+                  buttonColor: const Color(0xFF193147),
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                  fontColor: Colors.white,
+                  elevation: 0,
+                  borderRadius: 7,
+                )
+                    : PrimaryCustomButton(
+                  buttonText: "No Vacant",
+                  onPressed: () {}, // Disables the button
+                  buttonHeight: 40,
+                  buttonColor: Colors.grey, // Change color to indicate disabled state
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                  fontColor: Colors.white,
+                  elevation: 0,
+                  borderRadius: 7,
+                ),
               ],
             ),
             discount != 0

@@ -297,6 +297,8 @@ class _ClientProviderProfileState extends State<ClientProviderProfile> {
                           discount: service['discount'],
                           imageURL: service['imageURL'],
                           price: service['price'],
+                          maximumTenants: service['maximumTenant'],
+                          currentTenants: service['currentTenant'],
                           serviceDescription: service['serviceDescription'],
                           serviceName: service['serviceName'],
                           serviceType: service['serviceType'],
