@@ -499,7 +499,7 @@ class _ClientProviderProfileState extends State<ClientProviderProfile> {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               elevation: 0,
-              backgroundColor: const Color(0xFF279778),
+              backgroundColor: const Color(0xFF193147),
               foregroundColor: Colors.grey,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(7),
@@ -555,36 +555,6 @@ class _ClientProviderProfileState extends State<ClientProviderProfile> {
           // SIZED BOX: SPACING
           const SizedBox(width: 10),
 
-          // LOCATION ICON
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              elevation: 0,
-              backgroundColor: const Color(0xFFE5E7EB),
-              foregroundColor: Colors.grey,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(7),
-              ),
-              padding: EdgeInsets.zero,
-              minimumSize: Size.zero,
-            ),
-            onPressed: () {
-              if(context.mounted) {
-                showFloatingSnackBar(
-                  context,
-                  "Feature Under Development",
-                  const Color(0xFF3C3C40),
-                );
-              }
-            },
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              child: Icon(
-                Icons.report,
-                color: Color(0xFF3C4D48),
-                size: 20,
-              ),
-            ),
-          ),
         ],
       ),
     );

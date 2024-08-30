@@ -38,7 +38,7 @@ class _DynamicHomePage extends State<DynamicHomePage> {
               height: 60,
               child: const LoadingIndicator(
                 indicatorType: Indicator.ballScaleMultiple,
-                colors: [Color(0xFF0D6D52)],
+                colors: [Color(0xFF193147)],
               ),
             ),
           );
@@ -74,9 +74,9 @@ class _DynamicHomePage extends State<DynamicHomePage> {
         final userType = snapshot.data!.get('userType');
 
         // Check userType and navigate to the corresponding home page
-        if (userType == 'Client') {
+        if (userType == 'Tenant') {
           return const ClientNavigationBar(); // Navigate to client home page
-        } else if (userType == 'Provider') {
+        } else if (userType == 'Owner') {
           return const ProviderNavigationBar(); // Navigate to service provider home page
         } else {
           // Handle unknown userType (if needed)

@@ -76,17 +76,17 @@ class _NotificationCard extends State<NotificationCard> {
     String messageText = '';
     if ((widget.appointment['appointmentStatus'] == 'new') ||
         (widget.appointment['appointmentStatus'] == 'confirmed')) {
-      messageText = "booked an appointment.";
+      messageText = "booked an reservation.";
       containerColor = Colors.white;
     } else {
       containerColor = const Color(0xFFE5E7EB);
     }
     if (widget.appointment['appointmentStatus'] == 'confirmed') {
-      messageText = "booked an appointment.";
+      messageText = "booked an reservation.";
     } else if (widget.appointment['appointmentStatus'] == 'cancelled') {
-      messageText = "cancelled the appointment.";
+      messageText = "cancelled the reservation.";
     } else if (widget.appointment['appointmentStatus'] == 'done') {
-      messageText = "appointment schedule done.";
+      messageText = "reservation schedule done.";
     }
 
     return Material(
@@ -151,16 +151,6 @@ class _NotificationCard extends State<NotificationCard> {
                     // SIZED BOX: SPACING
                     const SizedBox(height: 7),
 
-                    // TYPE OF SERVICE
-                    Text(
-                      "Type: ${widget.appointment['serviceType']}",
-                      style: const TextStyle(
-                        height: 1.2,
-                        fontSize: 13,
-                        fontWeight: FontWeight.normal,
-                        color: Color(0xFF3C3C40),
-                      ),
-                    ),
 
                     // APPOINTMENT CREATED
                     SizedBox(

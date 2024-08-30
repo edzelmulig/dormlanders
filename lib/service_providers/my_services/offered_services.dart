@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -122,7 +121,7 @@ class _MyServicesState extends State<MyServices> {
           preferredSize: Size.fromHeight(AppBar().preferredSize.height),
           child: CustomAppBar(
               backgroundColor: const Color(0xFFF5F5F5),
-              titleText: "My services",
+              titleText: "My Dormitories",
               onLeadingPressed: () {
                 Navigator.of(context).popUntil((route) => route.isFirst);
               }),

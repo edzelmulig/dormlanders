@@ -80,7 +80,7 @@ class _AppointmentCardClientState extends State<AppointmentCardClient> {
                 children: <Widget>[
                   // CLIENT NAME
                   Padding(
-                    padding: EdgeInsets.only(right: 15),
+                    padding: const EdgeInsets.only(right: 15),
                     child: Text(
                       providerData.isNotEmpty
                           ? "${providerData['displayName']}"
@@ -110,7 +110,7 @@ class _AppointmentCardClientState extends State<AppointmentCardClient> {
                   // STATUS INDICATOR
                   Container(
                     padding: const EdgeInsets.only(top: 4, bottom: 4),
-                    margin: EdgeInsets.only(top: 3),
+                    margin: const EdgeInsets.only(top: 3),
                     width: 100,
                     decoration: BoxDecoration(
                       color: widget.appointment['appointmentStatus'] == 'new'

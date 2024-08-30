@@ -193,40 +193,6 @@ void appointmentClientModal(
                             ),
                           ),
 
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: appointment['serviceType'] !=
-                                          "Face-to-face consultation"
-                                      ? "${appointment['serviceType']}  |  Paid via GCash "
-                                      : "${appointment['serviceType']}  |  Unpaid ",
-                                  style: const TextStyle(
-                                    height: 0.9,
-                                    fontSize: 13.5,
-                                    fontWeight: FontWeight.normal,
-                                    color: Color(0xFF3C3C40),
-                                  ),
-                                ),
-                                WidgetSpan(
-                                  child: Center(
-                                    child: appointment['serviceType'] ==
-                                            "Face-to-face consultation"
-                                        ? const Icon(
-                                            Icons.cancel_rounded,
-                                            size: 15,
-                                            color: Color(0xFFe91b4f),
-                                          )
-                                        : const Icon(
-                                            Icons.check_circle,
-                                            size: 15,
-                                            color: Color(0xFF279778),
-                                          ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
 
                           // REFERENCE NUMBER
                           const SizedBox(height: 10),
@@ -316,7 +282,7 @@ void appointmentClientModal(
                   Padding(
                     padding: const EdgeInsets.only(left: 30, right: 30),
                     child: PrimaryCustomButton(
-                      buttonText: "Cancel appointment",
+                      buttonText: "Cancel reservation",
                       onPressed: () async {
                         try {
                           // UPDATE THE appointmentStatus ON CLIENT'S SIDE

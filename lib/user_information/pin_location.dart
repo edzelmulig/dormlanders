@@ -274,7 +274,7 @@ class _PinLocationState extends State<PinLocation> {
                             padding: EdgeInsets.only(left: 5),
                             child: Icon(
                               Icons.location_on_rounded,
-                              color: Color(0xFF279778),
+                              color: Color(0xFF193147),
                             ),
                           ),
                           hintText: "Search location",
@@ -385,7 +385,7 @@ class _PinLocationState extends State<PinLocation> {
                 ),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF279778),
+                    backgroundColor: const Color(0xFF193147),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(9),
                     ),
@@ -490,7 +490,7 @@ class _PinLocationState extends State<PinLocation> {
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.zero,
                         foregroundColor:
-                            const Color(0xFF279778).withOpacity(0.3),
+                            const Color(0xFF193147).withOpacity(0.3),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
@@ -503,7 +503,7 @@ class _PinLocationState extends State<PinLocation> {
                       child: const Icon(
                         Icons.close,
                         size: 20,
-                        color: Color(0xFF279778),
+                        color: Color(0xFF193147),
                       ),
                     ),
                   ),
@@ -512,7 +512,7 @@ class _PinLocationState extends State<PinLocation> {
                     bottom: 40,
                     left: 20,
                     child: FloatingActionButton(
-                      backgroundColor: const Color(0xFF279778),
+                      backgroundColor: const Color(0xFF193147),
                       onPressed: () {
                         setState(() {
                           // Toggle between MapType.normal and MapType.satellite
@@ -553,7 +553,7 @@ class _PinLocationState extends State<PinLocation> {
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.zero,
                         foregroundColor:
-                            const Color(0xFF279778).withOpacity(0.3),
+                            const Color(0xFF193147).withOpacity(0.3),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50),
                         ),
@@ -563,7 +563,7 @@ class _PinLocationState extends State<PinLocation> {
                       onPressed: updateCurrentLocation,
                       child: const Icon(
                         Icons.my_location_rounded,
-                        color: Color(0xFF279778),
+                        color: Color(0xFF193147),
                       ),
                     ),
                   ),

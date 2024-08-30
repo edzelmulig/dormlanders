@@ -193,9 +193,9 @@ class _ClientAppointmentState extends State<ClientAppointment> {
           'recipient': phoneNumber,
           'sender_id': 'PhilSMS',
           'type': 'plain',
-          'message': 'MentalBoost Appointment: \n\nDear ${widget.providerInfo!['displayName']}, \n\n'
+            'message': 'DormLander Reservation: \n\nDear ${widget.providerInfo!['displayName']}, \n\n'
               '${widget.clientInfo!['firstName']} ${widget.clientInfo!['lastName']} '
-              'has scheduled an appointment with you for ${widget.serviceName}.\nKindly refer for your MentalBoost app for further details. Thank you.',
+              'has scheduled an reservation with you for ${widget.serviceName}.\nKindly refer for your DormLander app for further details. Thank you.',
         };
 
         const String apiUrl = 'https://app.philsms.com/api/v3/sms/send';
@@ -243,8 +243,8 @@ class _ClientAppointmentState extends State<ClientAppointment> {
     if (context.mounted) {
       showFloatingSnackBar(
         context,
-        'Appointment booked successfully.',
-        const Color(0xFF279778),
+        'Reservation booked successfully.',
+        const Color(0xFF193147),
       );
     }
   }
@@ -314,7 +314,7 @@ class _ClientAppointmentState extends State<ClientAppointment> {
           data: ThemeData.light().copyWith(
             colorScheme: const ColorScheme.light(
               primary:
-                  Color(0xFF279778), // Change the primary color of the dialog
+                  Color(0xFF193147), // Change the primary color of the dialog
             ),
             dialogBackgroundColor: Colors.white,
             // Change the background color of the dialog
@@ -327,7 +327,7 @@ class _ClientAppointmentState extends State<ClientAppointment> {
                 borderRadius:
                     BorderRadius.circular(10), // Change the border radius here
               ),
-              headerBackgroundColor: const Color(0xFF279778),
+              headerBackgroundColor: const Color(0xFF193147),
               headerForegroundColor: Colors.white,
 
               // Add more customization as needed
@@ -497,7 +497,7 @@ class _ClientAppointmentState extends State<ClientAppointment> {
 
           ProfileImageWidget(
             width: MediaQuery.of(context).size.width,
-            height: 100,
+            height: 130,
             borderRadius: 5,
             imageURL: widget.imageURL,
           ),
@@ -526,20 +526,7 @@ class _ClientAppointmentState extends State<ClientAppointment> {
           // SIZED BOX: SPACING
           const SizedBox(height: 5),
 
-          // TEXT LABEL
-          const CustomTextDisplay(
-            receivedText: "Set date",
-            receivedTextSize: 15,
-            receivedTextWeight: FontWeight.w500,
-            receivedLetterSpacing: 0,
-            receivedTextColor: Color(0xFF3C4D48),
-          ),
 
-          // SIZED BOX: SPACING
-          const SizedBox(height: 10),
-
-          // TYPE OF SERVICE
-          _buildServiceTypeButton(),
 
           // SIZED BOX: SPACING
           const SizedBox(height: 12),
@@ -636,7 +623,7 @@ class _ClientAppointmentState extends State<ClientAppointment> {
                       ),
                     ),
                     const TextSpan(
-                      text: "/per session",
+                      text: "/per month",
                       style: TextStyle(
                         color: Colors.grey,
                         fontSize: 13,
@@ -662,12 +649,12 @@ class _ClientAppointmentState extends State<ClientAppointment> {
               children: <Widget>[
                 const CustomImageDisplay(
                   receivedImageLocation: 'images/gcash_logo.png',
-                  receivedPaddingLeft: 0,
-                  receivedPaddingRight: 0,
+                  receivedPaddingLeft: 5,
+                  receivedPaddingRight: 5,
                   receivedPaddingTop: 0,
                   receivedPaddingBottom: 0,
-                  receivedImageWidth: 70,
-                  receivedImageHeight: 70,
+                  receivedImageWidth: 50,
+                  receivedImageHeight: 50,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -721,61 +708,6 @@ class _ClientAppointmentState extends State<ClientAppointment> {
           // SIZED BOX: SPACING
           const SizedBox(height: 12),
 
-          // PAY IN CASH
-          if (!_isOnlineSelected) ...[
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  _isPayInCashSelected = !_isPayInCashSelected;
-                });
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: _isPayInCashSelected
-                        ? const Color(0xFF279778)
-                        : Colors.transparent,
-                    width: 1.5,
-                  ),
-                  borderRadius: BorderRadius.circular(7),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 5, bottom: 5),
-                  child: Row(
-                    children: <Widget>[
-                      Radio(
-                        value: true,
-                        groupValue: _isPayInCashSelected,
-                        onChanged: (value) {
-                          setState(() {
-                            _isPayInCashSelected = value as bool;
-                          });
-                        },
-                        activeColor: const Color(0xFF279778),
-                      ),
-
-                      // SIZED BOX: SPACING
-                      const SizedBox(width: 10),
-
-                      // TEXT
-                      const Text(
-                        "Pay in Cash",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF64666B),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-
-          // SIZED BOX: SPACING
-          const SizedBox(height: 12),
 
           // UPLOAD IMAGE CONTAINER
           ElevatedButton(
@@ -792,9 +724,9 @@ class _ClientAppointmentState extends State<ClientAppointment> {
                 width: 1.5, // Set width for enabled state
               ),
               elevation: 0,
-              minimumSize: const Size(double.infinity, 100),
+              minimumSize: const Size(double.infinity, 200),
             ),
-            onPressed: !_isOnlineSelected
+            onPressed: _isOnlineSelected
                 ? null
                 : () {
                     if (selectedImage == null) {
@@ -931,7 +863,7 @@ class _ClientAppointmentState extends State<ClientAppointment> {
               }
             },
             buttonHeight: 55,
-            buttonColor: const Color(0xFF279778),
+            buttonColor: const Color(0xFF193147),
             fontWeight: FontWeight.w500,
             fontSize: 15,
             fontColor: Colors.white,

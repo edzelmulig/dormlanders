@@ -66,7 +66,7 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    final logoMargin = screenHeight * 0.1; //
+    final logoMargin = screenHeight * 0.15; //
 
     return PopScope(
       canPop: false,
@@ -80,44 +80,21 @@ class _LandingPageState extends State<LandingPage> {
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              // MENTALBOOST LOGO
+              // DORMLANDERS LOGO
               Container(
-                margin: EdgeInsets.only(top: logoMargin, bottom: 10),
+
+                margin: EdgeInsets.only(top: logoMargin, bottom: 0),
                 child: const CustomImageDisplay(
-                  receivedImageLocation: "images/mentalboost_logo_no_bg.png",
+                  receivedImageLocation: "images/dormlanders_logo.png",
                   receivedPaddingLeft: 0,
                   receivedPaddingRight: 0,
-                  receivedPaddingTop: 0,
+                  receivedPaddingTop: 20,
                   receivedPaddingBottom: 0,
-                  receivedImageWidth: 200,
-                  receivedImageHeight: 200,
+                  receivedImageWidth: 350,
+                  receivedImageHeight: 150,
                 ),
               ),
 
-              // MENTALBOOST TEXT
-              const Align(
-                alignment: Alignment.center,
-                child: CustomTextDisplay(
-                  receivedText: "MentalBoost",
-                  receivedTextSize: 35,
-                  receivedTextWeight: FontWeight.w800,
-                  receivedLetterSpacing: 0,
-                  receivedTextColor: Color(0xFF3C3C40),
-                ),
-              ),
-
-              // MENTALBOOST TEXT
-              const Align(
-                alignment: Alignment.center,
-                child: CustomTextDisplay(
-                  receivedText:
-                      "Connecting Minds, Empowering Lives: MentalBoost",
-                  receivedTextSize: 14.5,
-                  receivedTextWeight: FontWeight.w600,
-                  receivedLetterSpacing: 0,
-                  receivedTextColor: Color(0xFF3C3C40),
-                ),
-              ),
 
               // Sign In TEXT
               Container(
@@ -128,7 +105,7 @@ class _LandingPageState extends State<LandingPage> {
                   receivedTextSize: 25.0,
                   receivedTextWeight: FontWeight.w500,
                   receivedLetterSpacing: 0,
-                  receivedTextColor: Color(0xFF279778),
+                  receivedTextColor: Color(0xFF193147),
                 ),
               ),
 
@@ -156,24 +133,24 @@ class _LandingPageState extends State<LandingPage> {
                             },
                             decoration: InputDecoration(
                               fillColor:
-                                  const Color(0xFF279778).withOpacity(.2),
+                                  const Color(0xFF193147).withOpacity(.2),
                               filled: true,
                               prefixIcon: Container(
                                 margin: const EdgeInsets.only(left: 5),
                                 child: const Icon(
                                   Icons.email_rounded,
-                                  color: Color(0xFF279778),
+                                  color: Color(0xFF193147),
                                 ),
                               ),
                               hintText: "Enter your email",
                               hintStyle: const TextStyle(
-                                color: Color(0xFF279778),
+                                color: Color(0xFF193147),
                                 fontWeight: FontWeight.normal,
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                                 borderSide: const BorderSide(
-                                  color: Color(0xFF279778),
+                                  color: Color(0xFF193147),
                                   width: 1.5,
                                 ),
                               ),
@@ -231,13 +208,13 @@ class _LandingPageState extends State<LandingPage> {
                             obscureText: !isVisible,
                             decoration: InputDecoration(
                               fillColor:
-                                  const Color(0xFF279778).withOpacity(.2),
+                                  const Color(0xFF193147).withOpacity(.2),
                               filled: true,
                               prefixIcon: Container(
                                 margin: const EdgeInsets.only(left: 5),
                                 child: const Icon(
                                   Icons.lock,
-                                  color: Color(0xFF279778),
+                                  color: Color(0xFF193147),
                                 ),
                               ),
                               suffixIcon: IconButton(
@@ -257,19 +234,19 @@ class _LandingPageState extends State<LandingPage> {
                                     isVisible
                                         ? Icons.visibility
                                         : Icons.visibility_off,
-                                    color: const Color(0xFF279778),
+                                    color: const Color(0xFF193147),
                                   ),
                                 ),
                               ),
                               hintText: "Enter your password",
                               hintStyle: const TextStyle(
-                                color: Color(0xFF279778),
+                                color: Color(0xFF193147),
                                 fontWeight: FontWeight.normal,
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                                 borderSide: const BorderSide(
-                                  color: Color(0xFF279778),
+                                  color: Color(0xFF193147),
                                   width: 1.5,
                                 ),
                               ),
@@ -333,7 +310,7 @@ class _LandingPageState extends State<LandingPage> {
                                   });
                                 }
                               },
-                              activeColor: const Color(0xFF279778),
+                              activeColor: const Color(0xFF193147),
                             ),
                           ),
                           const Text(
@@ -341,7 +318,7 @@ class _LandingPageState extends State<LandingPage> {
                             style: TextStyle(
                               fontSize: 15.0,
                               color: Color(
-                                  0xFF279778), // Change the text color here
+                                  0xFF193147), // Change the text color here
                             ),
                           ),
                         ],
@@ -366,7 +343,7 @@ class _LandingPageState extends State<LandingPage> {
                           }
                         },
                         buttonHeight: 55,
-                        buttonColor: const Color(0xFF279778),
+                        buttonColor: const Color(0xFF193147),
                         fontWeight: FontWeight.w500,
                         fontSize: 17,
                         fontColor: Colors.white,
@@ -414,94 +391,6 @@ class _LandingPageState extends State<LandingPage> {
                       ),
                     ),
 
-                    // CONTINUE WITH SOCIAL MEDIA ACCOUNT
-                    Container(
-                      padding: const EdgeInsets.only(left: 30, right: 30),
-                      child: const Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Divider(
-                                color: Color(
-                                    0xFF279778)), // Divider line on the left
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8),
-                            child: Text(
-                              'Continue with social media',
-                              style: TextStyle(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xFF279778),
-                              ),
-                            ),
-                          ), // Text in the middle
-                          Expanded(
-                            child: Divider(
-                              color: Color(0xFF279778),
-                            ), // Divider line on the right
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    // SOCIAL MEDIA BUTTONS
-                    Container(
-                      padding:
-                          const EdgeInsets.only(left: 25, right: 25, top: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          SocialMediaButton(
-                            receivedLogo: 'images/facebook_logo.png',
-                            receivedText: "Facebook",
-                            receivedTextSize: 12.0,
-                            receivedBorderRadius: 10.0,
-                            receivedFontWeight: FontWeight.bold,
-                            receivedColor: const Color(0xFF3C5A99),
-                            receivedCallback: () {
-                              // Continue to Facebook
-                              showFloatingSnackBar(
-                                context,
-                                "Feature Under Development",
-                                const Color(0xFF3C3C40),
-                              );
-                            },
-                          ),
-                          SocialMediaButton(
-                            receivedLogo: 'images/google_logo.png',
-                            receivedText: "Google",
-                            receivedTextSize: 12.0,
-                            receivedBorderRadius: 10.0,
-                            receivedFontWeight: FontWeight.bold,
-                            receivedColor: const Color(0xFFD83026),
-                            receivedCallback: () {
-                              // Continue to Google
-                              showFloatingSnackBar(
-                                context,
-                                "Feature Under Development",
-                                const Color(0xFF3C3C40),
-                              );
-                            },
-                          ),
-                          SocialMediaButton(
-                            receivedLogo: 'images/apple_logo.png',
-                            receivedText: "Apple",
-                            receivedTextSize: 12.0,
-                            receivedBorderRadius: 10.0,
-                            receivedFontWeight: FontWeight.bold,
-                            receivedColor: Colors.black,
-                            receivedCallback: () {
-                              // Continue to Apple
-                              showFloatingSnackBar(
-                                context,
-                                "Feature Under Development",
-                                const Color(0xFF3C3C40),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
 
                     // SIGN UP TEXT
                     Container(
@@ -533,7 +422,7 @@ class _LandingPageState extends State<LandingPage> {
                               style: TextStyle(
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xFF279778),
+                                color: Color(0xFF193147),
                               ),
                             ),
                           ),

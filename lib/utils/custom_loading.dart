@@ -17,7 +17,7 @@ void showLoadingIndicator(BuildContext context) {
         height: 60,
         child: const LoadingIndicator(
           indicatorType: Indicator.ballScaleMultiple,
-          colors: [Color(0xFF0D6D52)],
+          colors: [Color(0xFF193147)],
         ),
       ),
     ),

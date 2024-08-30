@@ -3,23 +3,23 @@ import 'package:flutter/material.dart';
 const String googleAPIKey = 'API_KEY';
 
 const MaterialColor mentalboosttheme = MaterialColor(_mentalboostthemePrimaryValue, <int, Color>{
-  50: Color(0xFFE5F3EF),
-  100: Color(0xFFBEE0D7),
-  200: Color(0xFF93CBBC),
-  300: Color(0xFF68B6A1),
-  400: Color(0xFF47A78C),
+  50: Color(0xFFe8eaed),
+  100: Color(0xFFd1d6da),
+  200: Color(0xFFbac1c8),
+  300: Color(0xFFa3adb5),
+  400: Color(0xFF758391),
   500: Color(_mentalboostthemePrimaryValue),
-  600: Color(0xFF238F70),
-  700: Color(0xFF1D8465),
-  800: Color(0xFF177A5B),
-  900: Color(0xFF0E6948),
+  600: Color(0xFF5e6f7e),
+  700: Color(0xFF475a6c),
+  800: Color(0xFF304659),
+  900: Color(0xFF193147),
 });
 const int _mentalboostthemePrimaryValue = 0xFF279778;
 
 const MaterialColor mentalboostthemeAccent = MaterialColor(_mentalboostthemeAccentValue, <int, Color>{
-  100: Color(0xFF9CFFD8),
+  100: Color(0xFF758391),
   200: Color(_mentalboostthemeAccentValue),
-  400: Color(0xFF36FFB0),
-  700: Color(0xFF1DFFA6),
+  400: Color(0xFF172c40),
+  700: Color(0xFF193147),
 });
 const int _mentalboostthemeAccentValue = 0xFF69FFC4;

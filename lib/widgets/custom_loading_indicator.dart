@@ -16,7 +16,7 @@ class CustomLoadingIndicator extends StatelessWidget {
         height: 50,
         child: const LoadingIndicator(
           indicatorType: Indicator.ballSpinFadeLoader,
-          colors: [Color(0xFF0D6D52)],
+          colors: [Color(0xFF193147)],
         ),
       ),
     );

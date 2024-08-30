@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:mentalboost/auth/main_page.dart';
-import 'package:mentalboost/colors.dart';
+import 'package:dormlanders/auth/main_page.dart';
+import 'package:dormlanders/colors.dart';
 import 'firebase_options.dart';
 
 // Main function of the application.
@@ -25,9 +25,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             primarySwatch: mentalboosttheme,
             textSelectionTheme: const TextSelectionThemeData(
-              cursorColor: Color(0xFF279778),
-              selectionColor: Color(0xFF279778),
-              selectionHandleColor: Color(0xFF279778),
+              cursorColor: Color(0xFF193147),
+              selectionColor: Color(0xFF193147),
+              selectionHandleColor: Color(0xFF193147),
             )
         ),
         home: const MainPage());

@@ -77,16 +77,16 @@ class _ClientNotificationCardState extends State<ClientNotificationCard> {
     if ((widget.appointment['appointmentStatus'] == 'new') ||
     (widget.appointment['appointmentStatus'] == 'confirmed')) {
       containerColor = Colors.white;
-      messageText = "You booked an appointment with ";
+      messageText = "You booked an reservation with ";
     } else {
       containerColor = const Color(0xFFE5E7EB);
     }
     if(widget.appointment['appointmentStatus'] == 'confirmed') {
-      messageText = "Your appointment is confirmed by ";
+      messageText = "Your reservation is confirmed by ";
     } else if(widget.appointment['appointmentStatus'] == 'cancelled') {
-      messageText = "Your appointment has been cancelled by ";
+      messageText = "Your reservation has been cancelled by ";
     } else if(widget.appointment['appointmentStatus'] == 'done') {
-      messageText = "Your appointment was marked done by ";
+      messageText = "Your reservation was marked done by ";
     }
 
     return Material(
@@ -153,16 +153,6 @@ class _ClientNotificationCardState extends State<ClientNotificationCard> {
                     // SIZED BOX: SPACING
                     const SizedBox(height: 5),
 
-                    // TYPE OF SERVICE
-                    Text(
-                      "Type: ${widget.appointment['serviceType']}",
-                      style: const TextStyle(
-                        height: 1.2,
-                        fontSize: 13,
-                        fontWeight: FontWeight.normal,
-                        color: Color(0xFF3C3C40),
-                      ),
-                    ),
 
                     // APPOINTMENT CREATED
                     SizedBox(

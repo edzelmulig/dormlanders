@@ -51,7 +51,7 @@ class _DashboardHeaderContainer extends State<DashboardHeaderContainer> {
                       CustomButtonWithNumber(
                         // NAVIGATE TO MY SERVICES SCREEN
                         numberOfServices: widget.numberOfAppointments,
-                        buttonText: "Appointments",
+                        buttonText: "Reservations",
                         onPressed: () {
                           navigateWithSlideFromRight(
                             context,
@@ -68,7 +68,7 @@ class _DashboardHeaderContainer extends State<DashboardHeaderContainer> {
                       // SERVICES BUTTON
                       CustomButtonWithNumber(
                         numberOfServices: widget.numberOfServices,
-                        buttonText: "Services",
+                        buttonText: "Dormitories",
                         onPressed: () {
                           // NAVIGATE TO MY SERVICES SCREEN
                           navigateWithSlideFromRight(

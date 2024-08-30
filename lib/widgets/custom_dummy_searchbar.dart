@@ -36,7 +36,7 @@ class DummySearchBar extends StatelessWidget {
 
           // HINT TEXT
           CustomTextDisplay(
-            receivedText: "Search service or location",
+            receivedText: "Search dormitory or location",
             receivedTextSize: 15,
             receivedTextWeight: FontWeight.normal,
             receivedLetterSpacing: 0,

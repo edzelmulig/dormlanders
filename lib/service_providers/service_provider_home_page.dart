@@ -277,7 +277,7 @@ class _ServiceProviderHomePageState extends State<ServiceProviderHomePage> {
                 children: <Widget>[
                   // TEXT
                   CustomTextDisplay(
-                    receivedText: "Recent appointments",
+                    receivedText: "Recent reservation",
                     receivedTextSize: 17,
                     receivedTextWeight: FontWeight.w500,
                     receivedLetterSpacing: 0,

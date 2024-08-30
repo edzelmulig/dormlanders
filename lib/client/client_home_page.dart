@@ -246,23 +246,23 @@ class _ClientHomePageState extends State<ClientHomePage> {
             // HEADER OF HOME PAGE
             Container(
               decoration: const BoxDecoration(
-                color: Color(0xFF279778),
+                color: Color(0xFF193147),
               ),
               child: Padding(
                 padding: const EdgeInsets.only(
-                    left: 15, right: 15, bottom: 10, top: 25),
+                    left: 15, right: 15, bottom: 12, top: 30),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     const CustomTextDisplay(
-                      receivedText: "MentalBoost",
+                      receivedText: "DormLanders",
                       receivedTextSize: 26,
                       receivedTextWeight: FontWeight.w700,
                       receivedLetterSpacing: 0,
                       receivedTextColor: Colors.white,
                     ),
                     DummySearchBar(
-                      hintText: "Search service or location",
+                      hintText: "Search dormitory or location",
                       onPressed: () {
                         navigateWithSlideFromRight(
                           context,
@@ -295,9 +295,9 @@ class _ClientHomePageState extends State<ClientHomePage> {
                       edgeOffset: 0,
                       triggerMode: RefreshIndicatorTriggerMode.onEdge,
                       color: Colors.white,
-                      backgroundColor: Color(0xFF279778),
+                      backgroundColor: const Color(0xFF193147),
                       onRefresh: () async {
-                        await Future.delayed(Duration(milliseconds: 1500));
+                        await Future.delayed(const Duration(milliseconds: 1500));
                         setState(() {
                           _onRefresh();
                         });

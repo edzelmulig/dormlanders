@@ -36,6 +36,9 @@ class _AddServiceState extends State<AddService> {
   final _discountController = TextEditingController();
   final _serviceTypeController = TextEditingController();
   final _imageURL = TextEditingController();
+  final _maximumTenantsController = TextEditingController();
+  final _currentTenantsController = TextEditingController();
+
 
   // FORM KEY DECLARATION
   final formKey = GlobalKey<FormState>();
@@ -49,9 +52,8 @@ class _AddServiceState extends State<AddService> {
 
   // LIST FOR SERVICE TYPE
   final List<String> serviceType = [
-    'Face-to-face Consultation',
-    'Online Consultation',
-    'Both Face-to-face and Online Consultation',
+    'Free WiFi',
+    'No Free WiFi',
   ];
 
   // FOCUS NODE DECLARATION
@@ -59,6 +61,8 @@ class _AddServiceState extends State<AddService> {
   final _descriptionFocusNode = FocusNode();
   final _priceFocusNode = FocusNode();
   final _discountFocusNode = FocusNode();
+  final _maximumTenantsFocusNode = FocusNode();
+  final _currentTenantsFocusNode = FocusNode();
 
   // INITIALIZATION
   @override
@@ -79,6 +83,8 @@ class _AddServiceState extends State<AddService> {
     _priceController.dispose();
     _discountController.dispose();
     _serviceTypeController.dispose();
+    _maximumTenantsController.dispose();
+    _currentTenantsController.dispose();
     _imageURL.dispose();
     _serviceDescriptionController.removeListener(_enforceWordLimit);
     super.dispose();
@@ -160,6 +166,8 @@ class _AddServiceState extends State<AddService> {
       formKey: formKey,
       isAvailable: isAvailable,
       serviceName: _serviceNameController.text,
+      maximumTenants: int.tryParse(_maximumTenantsController.text) ?? 0,
+      currentTenants: int.tryParse(_currentTenantsController.text) ?? 0,
       serviceDescription: _serviceDescriptionController.text,
       price: double.tryParse(_priceController.text) ?? 0.0,
       discount: int.tryParse(_discountController.text) ?? 0,
@@ -233,7 +241,7 @@ class _AddServiceState extends State<AddService> {
           ),
           centerTitle: true,
           title: const CustomTextDisplay(
-            receivedText: "Service information",
+            receivedText: "Dormitory information",
             receivedTextSize: 18,
             receivedTextWeight: FontWeight.w600,
             receivedLetterSpacing: 0,
@@ -256,7 +264,7 @@ class _AddServiceState extends State<AddService> {
 
                     // LABEL: AVAILABILITY
                     const CustomTextDisplay(
-                      receivedText: "Availability",
+                      receivedText: "Dormitory Availability",
                       receivedTextSize: 15,
                       receivedTextWeight: FontWeight.w500,
                       receivedLetterSpacing: 0,
@@ -273,11 +281,11 @@ class _AddServiceState extends State<AddService> {
                           border: Border.all(
                             width: 1.5,
                             color: isAvailable
-                                ? const Color(0xFF0D6D52)
+                                ? const Color(0xFF193147)
                                 : const Color(0xFFe91b4f),
                           ),
                           color: isAvailable
-                              ? const Color(0xFF0D6D52).withOpacity(0.1)
+                              ? const Color(0xFF193147).withOpacity(0.1)
                               : const Color(0xFFe91b4f).withOpacity(0.1)),
                       height: 60,
                       padding: const EdgeInsets.only(left: 10, right: 10),
@@ -293,7 +301,7 @@ class _AddServiceState extends State<AddService> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.normal,
                                 color: isAvailable
-                                    ? const Color(0xFF0D6D52)
+                                    ? const Color(0xFF193147)
                                     : const Color(0xFFe91b4f),
                               ),
                             ),
@@ -307,7 +315,7 @@ class _AddServiceState extends State<AddService> {
                                   isAvailable = value;
                                 });
                               },
-                              activeColor: const Color(0xFF0D6D52),
+                              activeColor: const Color(0xFF193147),
                               inactiveThumbColor: const Color(0xFF242424),
                               inactiveTrackColor: Colors.grey[300],
                             ),
@@ -321,7 +329,7 @@ class _AddServiceState extends State<AddService> {
 
                     // LABEL: SERVICE NAME
                     const CustomTextDisplay(
-                      receivedText: "Service Name",
+                      receivedText: "Dormitory Name",
                       receivedTextSize: 15,
                       receivedTextWeight: FontWeight.w500,
                       receivedLetterSpacing: 0,
@@ -338,14 +346,14 @@ class _AddServiceState extends State<AddService> {
                       nextFocusNode: _descriptionFocusNode,
                       keyBoardType: null,
                       inputFormatters: null,
-                      validatorText: "Service name is required",
+                      validatorText: "Dormitory name is required",
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return "Service name is required";
+                          return "Dormitory name is required";
                         }
                         return null;
                       },
-                      hintText: "Enter service name",
+                      hintText: "Enter dormitory name",
                       minLines: 1,
                       maxLines: 1,
                       isPassword: false,
@@ -356,7 +364,7 @@ class _AddServiceState extends State<AddService> {
 
                     // LABEL: SERVICE DESCRIPTION
                     const CustomTextDisplay(
-                      receivedText: "Service Description",
+                      receivedText: "Additional Description",
                       receivedTextSize: 15,
                       receivedTextWeight: FontWeight.w500,
                       receivedLetterSpacing: 0,
@@ -407,6 +415,98 @@ class _AddServiceState extends State<AddService> {
 
                     // SIZED BOX: SPACING
                     const SizedBox(height: 10),
+
+                    // MAXIMUM NUMBER OF TENANTS
+
+                    // SIZED BOX: SPACING
+                    const SizedBox(height: 10),
+
+                    // LABEL: SERVICE NAME
+                    const CustomTextDisplay(
+                      receivedText: "Maximum Number of Tenants",
+                      receivedTextSize: 15,
+                      receivedTextWeight: FontWeight.w500,
+                      receivedLetterSpacing: 0,
+                      receivedTextColor: Color(0xFF242424),
+                    ),
+
+                    // SIZED BOX: SPACING
+                    const SizedBox(height: 2),
+
+                    // TEXT FIELD: SERVICE NAME
+                    CustomTextField(
+                      controller: _maximumTenantsController,
+                      currentFocusNode: _maximumTenantsFocusNode,
+                      nextFocusNode: _currentTenantsFocusNode,
+                      keyBoardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      validatorText: "Maximum number of tenants is required",
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Maximum number of tenants is required";
+                        }
+                        return null;
+                      },
+                      hintText: "Enter maximum number of tenants",
+                      minLines: 1,
+                      maxLines: 1,
+                      isPassword: false,
+                    ),
+
+
+                    // CURRENT NUMBER OF TENANTS
+                    // SIZED BOX: SPACING
+                    const SizedBox(height: 10),
+
+                    // LABEL: SERVICE NAME
+                    const CustomTextDisplay(
+                      receivedText: "Current Number of Tenants",
+                      receivedTextSize: 15,
+                      receivedTextWeight: FontWeight.w500,
+                      receivedLetterSpacing: 0,
+                      receivedTextColor: Color(0xFF242424),
+                    ),
+
+                    // SIZED BOX: SPACING
+                    const SizedBox(height: 2),
+
+                    // TEXT FIELD: SERVICE NAME
+                    CustomTextField(
+                      controller: _currentTenantsController,
+                      currentFocusNode: _currentTenantsFocusNode,
+                      nextFocusNode: _priceFocusNode,
+                      keyBoardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      validatorText: "Current number of tenants is required",
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Current number of tenants is required";
+                        }
+
+                        // Parse the data
+                        final currentTenants = int.tryParse(_currentTenantsController.text);
+                        final maximumTenants = int.tryParse(_maximumTenantsController.text);
+
+                        if (currentTenants == null || maximumTenants == null) {
+                          return "Invalid input";
+                        }
+
+                        if (currentTenants > maximumTenants) {
+                          return "Current tenants exceed the maximum allowed.";
+                        }
+
+                        return null;
+                      },
+                      hintText: "Enter current number of tenants",
+                      minLines: 1,
+                      maxLines: 1,
+                      isPassword: false,
+                    ),
+
 
                     // PRICE AND DISCOUNT
                     Row(
@@ -502,7 +602,7 @@ class _AddServiceState extends State<AddService> {
 
                     // LABEL: SERVICE DESCRIPTION
                     const CustomTextDisplay(
-                      receivedText: "Service Type",
+                      receivedText: "Inclusion",
                       receivedTextSize: 15,
                       receivedTextWeight: FontWeight.w500,
                       receivedLetterSpacing: 0,
@@ -524,7 +624,7 @@ class _AddServiceState extends State<AddService> {
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: const BorderSide(
-                            color: Color(0xFF0D6D52),
+                            color: Color(0xFF193147),
                             width: 1.5,
                           ),
                         ),
@@ -615,7 +715,7 @@ class _AddServiceState extends State<AddService> {
 
                     // LABEL: DISPLAY PHOTO
                     const CustomTextDisplay(
-                      receivedText: "Display photo",
+                      receivedText: "Front View of Dormitory",
                       receivedTextSize: 15,
                       receivedTextWeight: FontWeight.w500,
                       receivedLetterSpacing: 0,
@@ -640,7 +740,7 @@ class _AddServiceState extends State<AddService> {
                           width: 1.5, // Set width for enabled state
                         ),
                         elevation: 0,
-                        minimumSize: const Size(double.infinity, 120),
+                        minimumSize: const Size(double.infinity, 80),
                       ),
                       onPressed: () {
                         if (selectedImage == null) {
@@ -706,6 +806,7 @@ class _AddServiceState extends State<AddService> {
                             ),
                     ),
 
+
                     // SIZED BOX: SPACING
                     const SizedBox(height: 10),
 
@@ -715,8 +816,8 @@ class _AddServiceState extends State<AddService> {
                         children: <TextSpan>[
                           TextSpan(
                             text:
-                                "Your offered services are public and can be seen "
-                                "by anyone on MentalBoost. ",
+                                "Your dormitory's details will be public and can be seen "
+                                "by anyone on Dormlanders. ",
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w400,
@@ -744,13 +845,16 @@ class _AddServiceState extends State<AddService> {
                       buttonText: "Publish",
                       onPressed: handleCreateService,
                       buttonHeight: 55,
-                      buttonColor: const Color(0xFF279778),
+                      buttonColor: const Color(0xFF193147),
                       fontWeight: FontWeight.w500,
                       fontSize: 17,
                       fontColor: Colors.white,
                       elevation: 1,
                       borderRadius: 10,
                     ),
+
+                    // SIZED BOX: SPACING
+                    const SizedBox(height: 10),
                   ],
                 ),
               ),

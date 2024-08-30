@@ -37,10 +37,13 @@ class _UpdateServiceState extends State<UpdateService> {
   final _availabilityController = TextEditingController();
   final _serviceNameController = TextEditingController();
   final _serviceDescriptionController = TextEditingController();
+  final _maximumTenantsController = TextEditingController();
+  final _currentTenantsController = TextEditingController();
   final _priceController = TextEditingController();
   final _discountController = TextEditingController();
   final _serviceTypeController = TextEditingController();
   final _imageURLController = TextEditingController();
+
 
   // FORM KEY DECLARATION
   final formKey = GlobalKey<FormState>();
@@ -55,9 +58,8 @@ class _UpdateServiceState extends State<UpdateService> {
 
   // LIST FOR SERVICE TYPE
   late List<String> serviceType = [
-    'Face-to-face Consultation',
-    'Online Consultation',
-    'Both Face-to-face and Online Consultation',
+    'Free WiFi',
+    'No Free WiFi',
   ];
 
   // FOCUS NODE DECLARATION
@@ -65,6 +67,8 @@ class _UpdateServiceState extends State<UpdateService> {
   final _descriptionFocusNode = FocusNode();
   final _priceFocusNode = FocusNode();
   final _discountFocusNode = FocusNode();
+  final _maximumTenantsFocusNode = FocusNode();
+  final _currentTenantsFocusNode = FocusNode();
 
   // INITIALIZATION
   @override
@@ -74,7 +78,6 @@ class _UpdateServiceState extends State<UpdateService> {
     _exitTimer = Timer(const Duration(seconds: 15), () {});
     getUserServices();
     _serviceDescriptionController.addListener(_enforceWordLimit);
-
   }
 
   // DISPOSE
@@ -87,6 +90,8 @@ class _UpdateServiceState extends State<UpdateService> {
     _serviceDescriptionController.dispose();
     _priceController.dispose();
     _discountController.dispose();
+    _maximumTenantsController.dispose();
+    _currentTenantsController.dispose();
     _serviceTypeController.dispose();
     _imageURLController.dispose();
     _serviceDescriptionController.removeListener(_enforceWordLimit);
@@ -160,37 +165,45 @@ class _UpdateServiceState extends State<UpdateService> {
       isLoading = true;
     });
 
-    final data =
-        await FirebaseService.getUserServices(widget.receiveServiceID);
-    if (mounted) {
-      setState(() {
-        isAvailable = data['availability'] ?? false;
-        selectedValue = data['serviceType'];
-        _serviceTypeController.text = selectedValue!;
-        if (data['imageURL'] != null) {
-          imageURL = data['imageURL'];
-          oldImageURL = imageURL;
-        } else {
-          imageURL = "images/no_image.jpeg";
-        }
-        String serviceType = data['serviceType'];
+    try {
+      final data = await FirebaseService.getUserServices(widget.receiveServiceID);
+
+      if (mounted) {
         setState(() {
-          selectedValue = serviceType;
+          isAvailable = data['availability'] ?? false;
+          selectedValue = data['serviceType'];
+          _serviceTypeController.text = selectedValue!;
+          if (data['imageURL'] != null) {
+            imageURL = data['imageURL'];
+            oldImageURL = imageURL;
+          } else {
+            imageURL = "images/no_image.jpeg";
+          }
+
+          // ASSIGN INITIAL VALUE TO THE CONTROLLERS
+          _availabilityController.text = data['availability'].toString();
+          _serviceNameController.text = data['serviceName'];
+          _serviceDescriptionController.text = data['serviceDescription'];
+          _maximumTenantsController.text = data['maximumTenant'].toString();
+          _currentTenantsController.text = data['currentTenant'].toString();
+          _priceController.text = data['price'].toString();
+          _discountController.text = data['discount'].toString();
+          _serviceTypeController.text = data['serviceType'];
+          _imageURLController.text = data['imageURL'];
+
+          isLoading = false;
         });
-
-        // ASSIGN INITIAL VALUE TO THE CONTROLLERS
-        _availabilityController.text = data['availability'].toString();
-        _serviceNameController.text = data['serviceName'];
-        _serviceDescriptionController.text = data['serviceDescription'];
-        _priceController.text = data['price'].toString();
-        _discountController.text = data['discount'].toString();
-        _serviceTypeController.text = data['serviceType'];
-        _imageURLController.text = data['imageURL'];
-
+      }
+    } catch (e) {
+      setState(() {
         isLoading = false;
       });
+      print('Error fetching user services: $e');
+      // Handle the error (show a snackbar, alert, etc.)
     }
   }
+
+
 
   // METHOD THAT WILL HANDLE THE IMAGE SELECTION FROM THE LOCAL STORAGE
   void handleImageSelection() async {
@@ -210,6 +223,8 @@ class _UpdateServiceState extends State<UpdateService> {
       isAvailable: isAvailable,
       serviceName: _serviceNameController.text,
       serviceDescription: _serviceDescriptionController.text,
+      maximumTenants: int.tryParse(_maximumTenantsController.text) ?? 0,
+      currentTenants: int.tryParse(_currentTenantsController.text) ?? 0,
       price: double.tryParse(_priceController.text) ?? 0.0,
       discount: int.tryParse(_discountController.text) ?? 0,
       serviceType: _serviceTypeController.text,
@@ -470,6 +485,100 @@ class _UpdateServiceState extends State<UpdateService> {
                             hintText: "Description here...",
                             minLines: 1,
                             maxLines: 5,
+                            isPassword: false,
+                          ),
+
+                          // SIZED BOX: SPACING
+                          const SizedBox(height: 10),
+
+                          // MAXIMUM NUMBER OF TENANTS
+
+                          // SIZED BOX: SPACING
+                          const SizedBox(height: 10),
+
+                          // LABEL: SERVICE NAME
+                          const CustomTextDisplay(
+                            receivedText: "Maximum Number of Tenants",
+                            receivedTextSize: 15,
+                            receivedTextWeight: FontWeight.w500,
+                            receivedLetterSpacing: 0,
+                            receivedTextColor: Color(0xFF242424),
+                          ),
+
+                          // SIZED BOX: SPACING
+                          const SizedBox(height: 2),
+
+                          // TEXT FIELD: SERVICE NAME
+                          CustomTextField(
+                            controller: _maximumTenantsController,
+                            currentFocusNode: _maximumTenantsFocusNode,
+                            nextFocusNode: _currentTenantsFocusNode,
+                            keyBoardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            validatorText: "Maximum number of tenants is required",
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Maximum number of tenants is required";
+                              }
+                              return null;
+                            },
+                            hintText: "Enter maximum number of tenants",
+                            minLines: 1,
+                            maxLines: 1,
+                            isPassword: false,
+                          ),
+
+
+                          // CURRENT NUMBER OF TENANTS
+                          // SIZED BOX: SPACING
+                          const SizedBox(height: 10),
+
+                          // LABEL: SERVICE NAME
+                          const CustomTextDisplay(
+                            receivedText: "Current Number of Tenants",
+                            receivedTextSize: 15,
+                            receivedTextWeight: FontWeight.w500,
+                            receivedLetterSpacing: 0,
+                            receivedTextColor: Color(0xFF242424),
+                          ),
+
+                          // SIZED BOX: SPACING
+                          const SizedBox(height: 2),
+
+                          // TEXT FIELD: SERVICE NAME
+                          CustomTextField(
+                            controller: _currentTenantsController,
+                            currentFocusNode: _currentTenantsFocusNode,
+                            nextFocusNode: _priceFocusNode,
+                            keyBoardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            validatorText: "Current number of tenants is required",
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Current number of tenants is required";
+                              }
+
+                              // Parse the data
+                              final currentTenants = int.tryParse(_currentTenantsController.text);
+                              final maximumTenants = int.tryParse(_maximumTenantsController.text);
+
+                              if (currentTenants == null || maximumTenants == null) {
+                                return "Invalid input";
+                              }
+
+                              if (currentTenants > maximumTenants) {
+                                return "Current tenants exceed the maximum allowed.";
+                              }
+
+                              return null;
+                            },
+                            hintText: "Enter current number of tenants",
+                            minLines: 1,
+                            maxLines: 1,
                             isPassword: false,
                           ),
 
@@ -840,6 +949,9 @@ class _UpdateServiceState extends State<UpdateService> {
                             elevation: 1,
                             borderRadius: 10,
                           ),
+
+                          // SIZED BOX: SPACING
+                          const SizedBox(height: 10),
                         ],
                       ),
                     ),

@@ -115,7 +115,7 @@ class _ClientSignUp extends State<ClientSignUp> {
             children: <Widget>[
               const Center(
                 child: CustomTextDisplay(
-                  receivedText: "Join MentalBoost",
+                  receivedText: "Join DormLanders",
                   receivedTextSize: 35,
                   receivedTextWeight: FontWeight.w800,
                   receivedLetterSpacing: 0,
@@ -134,7 +134,7 @@ class _ClientSignUp extends State<ClientSignUp> {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8),
                       child: Text(
-                        'Continue with social media',
+                        'Your ideal dorm, right at your fingertips.',
                         style: TextStyle(
                           fontSize: 15.0,
                           fontWeight: FontWeight.w500,
@@ -151,88 +151,7 @@ class _ClientSignUp extends State<ClientSignUp> {
                 ),
               ),
 
-              Container(
-                padding: const EdgeInsets.only(left: 30, right: 30, top: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    SocialMediaButton(
-                      receivedLogo: 'images/facebook_logo.png',
-                      receivedText: "Facebook",
-                      receivedTextSize: 12.0,
-                      receivedBorderRadius: 10.0,
-                      receivedFontWeight: FontWeight.bold,
-                      receivedColor: const Color(0xFF3C5A99),
-                      receivedCallback: () {
-                        // Continue to Facebook
-                        showFloatingSnackBar(
-                          context,
-                          "Feature Under Development",
-                          const Color(0xFF3C3C40),
-                        );
-                      },
-                    ),
-                    SocialMediaButton(
-                      receivedLogo: 'images/google_logo.png',
-                      receivedText: "Google",
-                      receivedTextSize: 12.0,
-                      receivedBorderRadius: 10.0,
-                      receivedFontWeight: FontWeight.bold,
-                      receivedColor: const Color(0xFFD83026),
-                      receivedCallback: () {
-                        // Continue to Google
-                        showFloatingSnackBar(
-                          context,
-                          "Feature Under Development",
-                          const Color(0xFF3C3C40),
-                        );
-                      },
-                    ),
-                    SocialMediaButton(
-                      receivedLogo: 'images/apple_logo.png',
-                      receivedText: "Apple",
-                      receivedTextSize: 12.0,
-                      receivedBorderRadius: 10.0,
-                      receivedFontWeight: FontWeight.bold,
-                      receivedColor: Colors.black,
-                      receivedCallback: () {
-                        // Continue to Apple
-                        showFloatingSnackBar(
-                          context,
-                          "Feature Under Development",
-                          const Color(0xFF3C3C40),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-
-              // CONTINUE WITH SOCIAL MEDIA APP
-              Container(
-                padding: const EdgeInsets.only(
-                  left: 35,
-                  right: 35,
-                  top: 15,
-                  bottom: 10,
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      child: Text(
-                        'OR',
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF3C3C40),
-                        ),
-                      ),
-                    ), // Text in the middle
-                  ],
-                ),
-              ),
+              const SizedBox(height: 20),
 
               // CONTAINER FOR FORM
               Container(
@@ -476,7 +395,7 @@ class _ClientSignUp extends State<ClientSignUp> {
                               buttonText: "Create account",
                               onPressed: performSignUp,
                               buttonHeight: 55,
-                              buttonColor: const Color(0xFF279778),
+                              buttonColor: const Color(0xFF193147),
                               fontWeight: FontWeight.w500,
                               fontSize: 17,
                               fontColor: Colors.white,

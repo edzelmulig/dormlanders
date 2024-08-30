@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dormlanders/widgets/custom_image_display.dart';
 import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:intl/intl.dart';
@@ -88,26 +89,39 @@ class _AppointmentReceiptState extends State<AppointmentReceipt> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                // SIZED BOX: SPACING
-                const SizedBox(height: 50),
 
-                // MENTAL BOOST LOGO
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
-                  child: Image.asset(
-                    'images/mentalboost_logo_no_bg.png',
-                    width: 140,
-                    height: 140,
-                    fit: BoxFit.cover,
+                // DORMLANDER LOGO
+                // Container(
+                //   color: Colors.red,
+                //   child: ClipRRect(
+                //     borderRadius: BorderRadius.circular(50),
+                //     child: Image.asset(
+                //       "images/dormlanders_logo.png",
+                //       width: 250,
+                //       height: 200,
+                //       fit: BoxFit.cover,
+                //     ),
+                //   ),
+                // ),
+                Container(
+                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.05, bottom: 0),
+                  child: const CustomImageDisplay(
+                    receivedImageLocation: "images/dormlanders_logo.png",
+                    receivedPaddingLeft: 0,
+                    receivedPaddingRight: 0,
+                    receivedPaddingTop: 0,
+                    receivedPaddingBottom: 0,
+                    receivedImageWidth: 350,
+                    receivedImageHeight: 150,
                   ),
                 ),
 
                 // SIZED BOX: SPACING
-                const SizedBox(height: 25),
+                const SizedBox(height: 10),
 
-                // MENTAL BOOST TEXT
+                // DORMLANDER TEXT
                 const CustomTextDisplay(
-                  receivedText: "MentalBoost",
+                  receivedText: "DormLanders Receipt",
                   receivedTextSize: 17,
                   receivedTextWeight: FontWeight.w700,
                   receivedLetterSpacing: 0,
@@ -132,14 +146,14 @@ class _AppointmentReceiptState extends State<AppointmentReceipt> {
                   style: const TextStyle(
                     fontSize: 14.5,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF279778),
+                    color: Color(0xFF193147),
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
 
                 const CustomTextDisplay(
-                  receivedText: "Your appointment has been sent for approval.",
+                  receivedText: "Your reservation has been sent for approval.",
                   receivedTextSize: 14.5,
                   receivedTextWeight: FontWeight.w500,
                   receivedLetterSpacing: 0,
@@ -162,15 +176,11 @@ class _AppointmentReceiptState extends State<AppointmentReceipt> {
                     child: RichText(
                       text: TextSpan(
                         children: <TextSpan>[
-                          TextSpan(
-                            text: widget.isOnlineSelected
-                                ? "Paid amount: "
-                                : "Unpaid amount: ",
+                          const TextSpan(
+                            text: "Paid amount:",
                             style: TextStyle(
-                              color: widget.isOnlineSelected
-                                  ? const Color(0xFF3C4D48)
-                                  : const Color(0xFFe91b4f),
-                              fontSize: 15.5,
+                              color: Color(0xFF193147),
+                              fontSize: 17,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
@@ -178,11 +188,9 @@ class _AppointmentReceiptState extends State<AppointmentReceipt> {
                             text: widget.discount > 0
                                 ? "₱ ${NumberFormat("#,##0", "en_PH").format(widget.discountedPrice)}.00"
                                 : "₱ ${NumberFormat("#,##0", "en_PH").format(widget.price)}.00",
-                            style: TextStyle(
-                              color: widget.isOnlineSelected
-                                  ? const Color(0xFF3C4D48)
-                                  : const Color(0xFFe91b4f),
-                              fontSize: 15.5,
+                            style: const TextStyle(
+                              color: Color(0xFF193147),
+                              fontSize: 17,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
@@ -205,7 +213,7 @@ class _AppointmentReceiptState extends State<AppointmentReceipt> {
                         TextSpan(
                           text:
                               "Approval may take sometimes, you will get notify"
-                              " once your appointment gets approved.",
+                              " once your reservation gets approved.",
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 14.5,
@@ -247,7 +255,7 @@ class _AppointmentReceiptState extends State<AppointmentReceipt> {
                       }
                     },
                     buttonHeight: 50,
-                    buttonColor: const Color(0xFF279778),
+                    buttonColor: const Color(0xFF193147),
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
                     fontColor: Colors.white,

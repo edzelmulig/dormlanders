@@ -143,7 +143,7 @@ class _UserEmailAddress extends State<UserEmailAddress> {
     showFloatingSnackBar(
       context,
       'Data updated successfully.',
-      const Color(0xFF279778),
+      const Color(0xFF193147),
     );
   }
 
@@ -302,7 +302,7 @@ class _UserEmailAddress extends State<UserEmailAddress> {
                               }
                             },
                             buttonHeight: 55,
-                            buttonColor: const Color(0xFF279778),
+                            buttonColor: const Color(0xFF193147),
                             fontWeight: FontWeight.w500,
                             fontSize: 17,
                             fontColor: Colors.white,

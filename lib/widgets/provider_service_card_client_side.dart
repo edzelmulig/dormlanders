@@ -70,7 +70,7 @@ class ProviderServiceCardClientSide extends StatelessWidget {
 
                 // SERVICE TYPE
                 CustomTextDisplay(
-                  receivedText: "Available: $serviceType",
+                  receivedText: "Inclusion: $serviceType",
                   receivedTextSize: 13,
                   receivedTextWeight: FontWeight.w500,
                   receivedLetterSpacing: 0,
@@ -112,7 +112,7 @@ class ProviderServiceCardClientSide extends StatelessWidget {
                         ),
                       ),
                       const TextSpan(
-                        text: "/per session",
+                        text: "/per month",
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: 13,
@@ -128,7 +128,7 @@ class ProviderServiceCardClientSide extends StatelessWidget {
                 // APPOINTMENT BUTTON
                 availability
                     ? PrimaryCustomButton(
-                        buttonText: "Book appointment",
+                        buttonText: "Book Reservation",
                         onPressed: () {
                           navigateWithSlideFromRight(
                             context,
@@ -148,7 +148,7 @@ class ProviderServiceCardClientSide extends StatelessWidget {
                           );
                         },
                         buttonHeight: 40,
-                        buttonColor: const Color(0xFF279778),
+                        buttonColor: const Color(0xFF193147),
                         fontWeight: FontWeight.w500,
                         fontSize: 14,
                         fontColor: Colors.white,

@@ -1,6 +1,8 @@
 import 'dart:typed_data';
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
+import 'package:dormlanders/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -196,40 +198,6 @@ void appointmentProviderModal(
                             ),
                           ),
 
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: appointment['serviceType'] !=
-                                      "Face-to-face consultation"
-                                      ? "${appointment['serviceType']}  |  Paid via GCash "
-                                      : "${appointment['serviceType']}  |  Unpaid ",
-                                  style: const TextStyle(
-                                    height: 0.9,
-                                    fontSize: 13.5,
-                                    fontWeight: FontWeight.normal,
-                                    color: Color(0xFF3C3C40),
-                                  ),
-                                ),
-                                WidgetSpan(
-                                  child: Center(
-                                    child: appointment['serviceType'] ==
-                                        "Face-to-face consultation"
-                                        ? const Icon(
-                                      Icons.cancel_rounded,
-                                      size: 15,
-                                      color: Color(0xFFe91b4f),
-                                    )
-                                        : const Icon(
-                                      Icons.check_circle,
-                                      size: 15,
-                                      color: Color(0xFF279778),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
 
                           // REFERENCE NUMBER
                           const SizedBox(height: 10),
@@ -332,12 +300,42 @@ void appointmentProviderModal(
                             },
                           );
 
+
+                          // SEND SMS TO CLIENT THAT RESERVATION HAS BEEN APPROVED
+                          final String phoneNumber =
+                              '639${clientData['phoneNumber'].toString(1)}';
+
+
+                          // SEND MESSAGE TO THE SERVICE PROVIDER
+                          final Map<String, dynamic> requestData = {
+                            'recipient': phoneNumber,
+                            'sender_id': 'PhilSMS',
+                            'type': 'plain',
+                            'message': 'DormLander Reservation Update: \n\nDear ${clientData['firstName']} ${clientData['lastName']}, \n\n'
+                                'your reservation has been approved.\nKindly refer for your DormLander app for further details. Thank you.',
+                          };
+
+                          const String apiUrl = 'https://app.philsms.com/api/v3/sms/send';
+
+                          final http.Response response = await http.post(
+                            Uri.parse(apiUrl),
+                            headers: {
+                              'Authorization': smsAPI,
+                              'Content-Type': 'application/json',
+                              'Accept': 'application/json'
+                            },
+                            body: jsonEncode(requestData),
+                          );
+
+
+
+
                           Navigator.of(context).pop();
                           if (context.mounted) {
                             showFloatingSnackBar(
                               context,
-                              'Appointment updated successfully.',
-                              const Color(0xFF279778),
+                              'Reservation updated successfully.',
+                              const Color(0xFF193147),
                             );
                           }
                         } catch (e) {
@@ -345,7 +343,7 @@ void appointmentProviderModal(
                         }
                       },
                       buttonHeight: 55,
-                      buttonColor: const Color(0xFF279778),
+                      buttonColor: const Color(0xFF193147),
                       fontWeight: FontWeight.w500,
                       fontSize: 15,
                       fontColor: Colors.white,
@@ -390,12 +388,12 @@ void appointmentProviderModal(
                           if (context.mounted) {
                             showFloatingSnackBar(
                               context,
-                              'Appointment cancelled successfully.',
-                              const Color(0xFF279778),
+                              'Reservation cancelled successfully.',
+                              const Color(0xFF193147),
                             );
                           }
                         } catch (e) {
-                          print('Error cancelling appointment: $e');
+                          print('Error cancelling reservation: $e');
                         }
                       },
                       buttonHeight: 55,
@@ -445,12 +443,12 @@ void appointmentProviderModal(
                           if (context.mounted) {
                             showFloatingSnackBar(
                               context,
-                              'Appointment done.',
-                              const Color(0xFF279778),
+                              'Reservation done.',
+                              const Color(0xFF193147),
                             );
                           }
                         } catch (e) {
-                          print('Error updating appointment: $e');
+                          print('Error updating reservation: $e');
                         }
                       },
                       buttonHeight: 55,
@@ -498,12 +496,12 @@ void appointmentProviderModal(
                           if (context.mounted) {
                             showFloatingSnackBar(
                               context,
-                              'Appointment cancelled successfully.',
-                              const Color(0xFF279778),
+                              'Reservation cancelled successfully.',
+                              const Color(0xFF193147),
                             );
                           }
                         } catch (e) {
-                          print('Error cancelling appointment: $e');
+                          print('Error cancelling reservation: $e');
                         }
                       },
                       buttonHeight: 55,

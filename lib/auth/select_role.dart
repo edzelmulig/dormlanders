@@ -17,7 +17,7 @@ class SelectRole extends StatefulWidget {
 class _SelectRoleState extends State<SelectRole> {
   bool isClientSelected = true;
   bool isProviderSelected = false;
-  String selectedRole = 'Client';
+  String selectedRole = 'Tenant';
   bool privacyAccepted = false;
 
   @override
@@ -33,7 +33,7 @@ class _SelectRoleState extends State<SelectRole> {
     // Clear the values of the variables when the screen is disposed
     isClientSelected = true;
     isProviderSelected = false;
-    selectedRole = 'Client';
+    selectedRole = 'Tenant';
     privacyAccepted = false;
     super.dispose();
   }
@@ -60,14 +60,14 @@ class _SelectRoleState extends State<SelectRole> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: Container(
-              padding: EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20.0),
               width: double.infinity,
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Text(
+                    const Text(
                       'Privacy and Security Notice',
                       style: TextStyle(
                         fontSize: 20,
@@ -75,7 +75,7 @@ class _SelectRoleState extends State<SelectRole> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Text(
+                    const Text(
                       "Data Privacy Statement",
                       style: TextStyle(
                         fontSize: 17,
@@ -83,8 +83,8 @@ class _SelectRoleState extends State<SelectRole> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Text(
-                      "Welcome to MentalBoost! We are committed to protecting your privacy and ensuring the security of your personal data. Before you complete your sign-up process, please read and understand how we handle the data you provide us.",
+                    const Text(
+                      "Welcome to DormLanders! We are committed to protecting your privacy and ensuring the security of your personal data. Before you complete your sign-up process, please read and understand how we handle the data you provide us.",
                       textAlign: TextAlign.justify,
                       style: TextStyle(
                         fontSize: 15,
@@ -92,7 +92,7 @@ class _SelectRoleState extends State<SelectRole> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Text(
+                    const Text(
                       "Collection of Data:",
                       style: TextStyle(
                         fontSize: 17,
@@ -100,8 +100,8 @@ class _SelectRoleState extends State<SelectRole> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Text(
-                      "MentalBoost collects personal data such as your name, email address, and other relevant information necessary for the creation and maintenance of your account. We may also collect data related to your usage of our services to enhance your experience.",
+                    const Text(
+                      "DormLanders collects personal data such as your name, email address, and other relevant information necessary for the creation and maintenance of your account. We may also collect data related to your usage of our services to enhance your experience.",
                       textAlign: TextAlign.justify,
                       style: TextStyle(
                         fontSize: 15,
@@ -109,7 +109,7 @@ class _SelectRoleState extends State<SelectRole> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Text(
+                    const Text(
                       "Use of Data:",
                       style: TextStyle(
                         fontSize: 17,
@@ -117,15 +117,15 @@ class _SelectRoleState extends State<SelectRole> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Text(
-                      "The data you provide to MentalBoost will be used for the following purposes:",
+                    const Text(
+                      "The data you provide to DormLanders will be used for the following purposes:",
                       textAlign: TextAlign.justify,
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
-                    Text(
+                    const Text(
                       "• To create and manage your user account;",
                       textAlign: TextAlign.justify,
                       style: TextStyle(
@@ -133,7 +133,7 @@ class _SelectRoleState extends State<SelectRole> {
                         fontWeight: FontWeight.normal,
                       ),
                     ),
-                    Text(
+                    const Text(
                       "• To personalize and enhance your experience within the application;",
                       textAlign: TextAlign.justify,
                       style: TextStyle(
@@ -141,7 +141,7 @@ class _SelectRoleState extends State<SelectRole> {
                         fontWeight: FontWeight.normal,
                       ),
                     ),
-                    Text(
+                    const Text(
                       "• To communicate important notices, such as changes to our terms, conditions, and policies;",
                       textAlign: TextAlign.justify,
                       style: TextStyle(
@@ -149,7 +149,7 @@ class _SelectRoleState extends State<SelectRole> {
                         fontWeight: FontWeight.normal,
                       ),
                     ),
-                    Text(
+                    const Text(
                       "• To provide customer support and respond to your requests and inquiries;",
                       textAlign: TextAlign.justify,
                       style: TextStyle(
@@ -157,8 +157,8 @@ class _SelectRoleState extends State<SelectRole> {
                         fontWeight: FontWeight.normal,
                       ),
                     ),
-                    Text(
-                      "• To conduct research and analysis to improve the functionality and services offered by MentalBoost.",
+                    const Text(
+                      "• To conduct research and analysis to improve the functionality and services offered by DormLanders.",
                       textAlign: TextAlign.justify,
                       style: TextStyle(
                         fontSize: 15,
@@ -166,7 +166,7 @@ class _SelectRoleState extends State<SelectRole> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Text(
+                    const Text(
                       "Data Protection:",
                       style: TextStyle(
                         fontSize: 17,
@@ -174,8 +174,8 @@ class _SelectRoleState extends State<SelectRole> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Text(
-                      "We implement a variety of security measures to maintain the safety of your personal information. Access to your personal data is restricted to authorized MentalBoost personnel only and is subject to confidentiality obligations.",
+                    const Text(
+                      "We implement a variety of security measures to maintain the safety of your personal information. Access to your personal data is restricted to authorized DormLander personnel only and is subject to confidentiality obligations.",
                       textAlign: TextAlign.justify,
                       style: TextStyle(
                         fontSize: 15,
@@ -183,7 +183,7 @@ class _SelectRoleState extends State<SelectRole> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Text(
+                    const Text(
                       "Compliance:",
                       style: TextStyle(
                         fontSize: 17,
@@ -191,7 +191,7 @@ class _SelectRoleState extends State<SelectRole> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Text(
+                    const Text(
                       "All data handling practices are designed to comply with the 'Data Privacy Act of 2012' and other applicable laws and regulations concerning data privacy and protection.",
                       textAlign: TextAlign.justify,
                       style: TextStyle(
@@ -200,7 +200,7 @@ class _SelectRoleState extends State<SelectRole> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Text(
+                    const Text(
                       "Consent:",
                       style: TextStyle(
                         fontSize: 17,
@@ -208,7 +208,7 @@ class _SelectRoleState extends State<SelectRole> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Text(
+                    const Text(
                       "By clicking 'Agree' and proceeding with the sign-up process, you consent to the collection, use, and disclosure of your personal information as described in this Data Privacy Statement.",
                       textAlign: TextAlign.justify,
                       style: TextStyle(
@@ -220,15 +220,14 @@ class _SelectRoleState extends State<SelectRole> {
                     // CHECK BOX
                     PrimaryCustomButton(
                       buttonText: "Agree",
-                      onPressed:
-                          () {
+                      onPressed: () {
                         setState(() {
                           updateSelected(true);
                           Navigator.pop(context);
                         });
                       },
                       buttonHeight: 55,
-                      buttonColor: const Color(0xFF279778),
+                      buttonColor: const Color(0xFF193147),
                       fontWeight: FontWeight.w500,
                       fontSize: 15,
                       fontColor: Colors.white,
@@ -239,10 +238,10 @@ class _SelectRoleState extends State<SelectRole> {
                     // CHECK BOX
                     PrimaryCustomButton(
                       buttonText: "Decline",
-                      onPressed:
-                          () {
+                      onPressed: () {
                         setState(() {
-                          Navigator.of(context).popUntil((route) => route.isFirst);
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
                         });
                       },
                       buttonHeight: 55,
@@ -277,43 +276,16 @@ class _SelectRoleState extends State<SelectRole> {
           backgroundColor: const Color(0xFFF7F5F5),
           centerTitle: true,
           automaticallyImplyLeading: false,
-          title: Row(
+          title: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             // mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Container(
-                margin: const EdgeInsets.only(right: 5),
-                child: const CustomImageDisplay(
-                  receivedImageLocation: "images/mentalboost_logo_no_bg.png",
-                  receivedPaddingLeft: 0,
-                  receivedPaddingRight: 0,
-                  receivedPaddingTop: 0,
-                  receivedPaddingBottom: 0,
-                  receivedImageWidth: 35,
-                  receivedImageHeight: 35,
-                ),
-              ),
-              RichText(
-                text: const TextSpan(
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: "Mental",
-                      style: TextStyle(
-                        fontSize: 23,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xFF3C3C40),
-                      ),
-                    ),
-                    TextSpan(
-                      text: "Boost",
-                      style: TextStyle(
-                        fontSize: 23,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xFF3C3C40),
-                      ),
-                    ),
-                  ],
-                ),
+              CustomTextDisplay(
+                receivedText: "JOIN DORMLANDERS NOW!",
+                receivedTextSize: 18,
+                receivedTextWeight: FontWeight.w800,
+                receivedLetterSpacing: 0.0,
+                receivedTextColor: Color(0xFF3C3C40),
               ),
             ],
           ),
@@ -326,7 +298,7 @@ class _SelectRoleState extends State<SelectRole> {
               alignment: Alignment.center,
               child: const CustomTextDisplay(
                 receivedText: "Select account type",
-                receivedTextSize: 30,
+                receivedTextSize: 25,
                 receivedTextWeight: FontWeight.w800,
                 receivedLetterSpacing: 0,
                 receivedTextColor: Color(0xFF3C3C40),
@@ -336,15 +308,15 @@ class _SelectRoleState extends State<SelectRole> {
             // BUTTON FOR CLIENT
             CustomRoleSelectionButton(
               isSelected: isClientSelected,
-              role: "Client",
-              firstText: "I'm a client, seeking mental",
-              secondText: "health support.",
+              role: "Tenant",
+              firstText: "I'm a tenant, searching for a dormitory.",
+              secondText: "",
               icon: Icons.person,
               onPressed: () {
                 setState(() {
                   isClientSelected = true;
                   isProviderSelected = false;
-                  selectedRole = "Client";
+                  selectedRole = "Tenant";
                 });
               },
             ),
@@ -355,15 +327,15 @@ class _SelectRoleState extends State<SelectRole> {
             // BUTTON FOR MENTAL HEALTH SERVICE PROVIDER
             CustomRoleSelectionButton(
               isSelected: isProviderSelected,
-              role: "Provider",
-              firstText: "I'm a mental health service",
-              secondText: "provider.",
+              role: "Owner",
+              firstText: "I'm a dormitory owner listing my property for rent.",
+              secondText: "",
               icon: Icons.person_pin_rounded,
               onPressed: () {
                 setState(() {
                   isClientSelected = false;
                   isProviderSelected = true;
-                  selectedRole = "Provider";
+                  selectedRole = "Owner";
                 });
               },
             ),
@@ -378,14 +350,14 @@ class _SelectRoleState extends State<SelectRole> {
                 buttonText: "Join as $selectedRole",
                 onPressed: () {
                   // NAVIGATE TO DESIRED SIGN UP PAGE
-                  if (selectedRole == 'Client' && privacyAccepted == true) {
+                  if (selectedRole == 'Tenant' && privacyAccepted == true) {
                     navigateWithSlideFromRight(
                       context,
                       ClientSignUp(userType: selectedRole),
                       1.0,
                       0.0,
                     );
-                  } else if (selectedRole != 'Client' &&
+                  } else if (selectedRole != 'Tenant' &&
                       privacyAccepted == true) {
                     navigateWithSlideFromRight(
                       context,
@@ -393,14 +365,14 @@ class _SelectRoleState extends State<SelectRole> {
                       1.0,
                       0.0,
                     );
-                  } else if(privacyAccepted == false) {
+                  } else if (privacyAccepted == false) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       _showPrivacyDialog(context);
                     });
                   }
                 },
                 buttonHeight: 55,
-                buttonColor: const Color(0xFF279778),
+                buttonColor: const Color(0xFF193147),
                 fontWeight: FontWeight.w500,
                 fontSize: 17,
                 fontColor: Colors.white,
@@ -433,7 +405,7 @@ class _SelectRoleState extends State<SelectRole> {
                       style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xFF279778),
+                        color: Color(0xFF193147),
                       ),
                     ),
                   ),

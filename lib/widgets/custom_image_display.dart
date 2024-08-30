@@ -24,7 +24,7 @@ class CustomImageDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AssetImage assetImage = AssetImage(receivedImageLocation);
-    Image image = Image(image: assetImage);
+    Image image = Image(image: assetImage, fit: BoxFit.fitWidth);
     return Container(
       padding: EdgeInsets.only(
         left: receivedPaddingLeft,

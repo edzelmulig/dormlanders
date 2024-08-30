@@ -380,7 +380,7 @@ class _ChatPageState extends State<ChatPage> {
               onPressed: sendMessage,
               icon: const Icon(
                 Icons.send_rounded,
-                color: Color(0xFF279778),
+                color: Color(0xFF193147),
                 size: 30,
               ),
             ),

@@ -123,7 +123,7 @@ class UserProfileService {
             showFloatingSnackBar(
               context,
               'Data updated successfully.',
-              const Color(0xFF279778),
+              const Color(0xFF193147),
             );
           }
         } else {

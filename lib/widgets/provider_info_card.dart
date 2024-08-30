@@ -79,7 +79,7 @@ class ProviderInfoCard extends StatelessWidget {
                   children: <Widget>[
                     // DISPLAY NAME & VERIFIED LOGO
                     Padding(
-                      padding: EdgeInsets.only(top: 15),
+                      padding: const EdgeInsets.only(top: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -102,7 +102,7 @@ class ProviderInfoCard extends StatelessWidget {
                       children: <Widget>[
                         // CITY
 
-                        Padding(
+                        const Padding(
                           padding: EdgeInsets.only(right: 3),
                           child: Icon(
                             Icons.location_on_rounded,

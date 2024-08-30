@@ -35,7 +35,7 @@ class VerifiedDisplayNameWidget extends StatelessWidget {
             WidgetSpan(
               child: Icon(
                 Icons.verified_rounded,
-                color: const Color(0xFF279778),
+                color: const Color(0xFF193147),
                 size: iconSize,
               ),
               alignment: PlaceholderAlignment.middle,

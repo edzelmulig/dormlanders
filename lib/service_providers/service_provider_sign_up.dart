@@ -117,7 +117,7 @@ class _ServiceProviderSignUp extends State<ServiceProviderSignUp> {
               // HEADER TEXT
               const Center(
                 child: CustomTextDisplay(
-                  receivedText: "Join MentalBoost",
+                  receivedText: "Join DormLanders",
                   receivedTextSize: 35,
                   receivedTextWeight: FontWeight.w800,
                   receivedLetterSpacing: 0,
@@ -132,7 +132,7 @@ class _ServiceProviderSignUp extends State<ServiceProviderSignUp> {
                   alignment: Alignment.center,
                   child: CustomTextDisplay(
                     receivedText:
-                        "Connecting Minds, Empowering Lives: MentalBoost",
+                        "Manage your dormitory effortlessly from anywhere.",
                     receivedTextSize: 14.5,
                     receivedTextWeight: FontWeight.w600,
                     receivedLetterSpacing: 0,
@@ -163,7 +163,7 @@ class _ServiceProviderSignUp extends State<ServiceProviderSignUp> {
                           children: <Widget>[
                             // LABEL: DISPLAY NAME
                             const CustomTextDisplay(
-                              receivedText: "Display Name",
+                              receivedText: "Dormitory Name",
                               receivedTextSize: 14,
                               receivedTextWeight: FontWeight.w500,
                               receivedLetterSpacing: 0,
@@ -180,14 +180,14 @@ class _ServiceProviderSignUp extends State<ServiceProviderSignUp> {
                               nextFocusNode: _firstNameFocusNode,
                               keyBoardType: null,
                               inputFormatters: null,
-                              validatorText: "Display name is required",
+                              validatorText: "Dormitory name is required",
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return "Display name is required";
+                                  return "Dormitory name is required";
                                 }
                                 return null;
                               },
-                              hintText: "Enter display name",
+                              hintText: "Enter dormitory name",
                               minLines: 1,
                               maxLines: 1,
                               isPassword: false,
@@ -198,7 +198,7 @@ class _ServiceProviderSignUp extends State<ServiceProviderSignUp> {
 
                             // LABEL: FIRST NAME
                             const CustomTextDisplay(
-                              receivedText: "First Name",
+                              receivedText: "Owner's First Name",
                               receivedTextSize: 15,
                               receivedTextWeight: FontWeight.w500,
                               receivedLetterSpacing: 0,
@@ -215,14 +215,14 @@ class _ServiceProviderSignUp extends State<ServiceProviderSignUp> {
                               nextFocusNode: _lastNameFocusNode,
                               keyBoardType: null,
                               inputFormatters: null,
-                              validatorText: "First name is required",
+                              validatorText: "Owner's first name is required",
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return "First name is required";
+                                  return "Owner's first name is required";
                                 }
                                 return null;
                               },
-                              hintText: "Enter your first name",
+                              hintText: "Enter owner's first name",
                               minLines: 1,
                               maxLines: 1,
                               isPassword: false,
@@ -233,7 +233,7 @@ class _ServiceProviderSignUp extends State<ServiceProviderSignUp> {
 
                             // LABEL: LAST NAME
                             const CustomTextDisplay(
-                              receivedText: "Last Name",
+                              receivedText: "Owner's Last Name",
                               receivedTextSize: 15,
                               receivedTextWeight: FontWeight.w500,
                               receivedLetterSpacing: 0,
@@ -250,14 +250,14 @@ class _ServiceProviderSignUp extends State<ServiceProviderSignUp> {
                               nextFocusNode: _phoneNumberFocusNode,
                               keyBoardType: null,
                               inputFormatters: null,
-                              validatorText: "Last name is required",
+                              validatorText: "Owner's last name is required",
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return "Last name is required";
+                                  return "Owner's lame is required";
                                 }
                                 return null;
                               },
-                              hintText: "Enter your last name",
+                              hintText: "Enter owner's last name",
                               minLines: 1,
                               maxLines: 1,
                               isPassword: false,
@@ -268,7 +268,7 @@ class _ServiceProviderSignUp extends State<ServiceProviderSignUp> {
 
                             // LABEL: LAST NAME
                             const CustomTextDisplay(
-                              receivedText: "Phone Number",
+                              receivedText: "Contact Number",
                               receivedTextSize: 15,
                               receivedTextWeight: FontWeight.w500,
                               receivedLetterSpacing: 0,
@@ -283,7 +283,7 @@ class _ServiceProviderSignUp extends State<ServiceProviderSignUp> {
                               controller: _phoneNumberController,
                               currentFocusNode: _phoneNumberFocusNode,
                               nextFocusNode: _emailAddressFocusNode,
-                              validatorText: "Phone number is required",
+                              validatorText: "Contact number is required",
                               keyBoardType: TextInputType.number,
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
@@ -291,11 +291,11 @@ class _ServiceProviderSignUp extends State<ServiceProviderSignUp> {
                               ],
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return "Phone number is required";
+                                  return "Contact number is required";
                                 }
                                 return null;
                               },
-                              hintText: "Enter your phone number",
+                              hintText: "Enter your contact number",
                               minLines: 1,
                               maxLines: 1,
                               isPassword: false,
@@ -418,7 +418,7 @@ class _ServiceProviderSignUp extends State<ServiceProviderSignUp> {
                               buttonText: "Create account",
                               onPressed: performSignUp,
                               buttonHeight: 55,
-                              buttonColor: const Color(0xFF279778),
+                              buttonColor: const Color(0xFF193147),
                               fontWeight: FontWeight.w500,
                               fontSize: 17,
                               fontColor: Colors.white,

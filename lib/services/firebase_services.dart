@@ -19,6 +19,8 @@ class FirebaseService {
     required String serviceName,
     required String serviceDescription,
     required double price,
+    required int maximumTenants,
+    required int currentTenants,
     required int discount,
     required String serviceType,
     PlatformFile? selectedImage,
@@ -48,6 +50,8 @@ class FirebaseService {
         'serviceName': serviceName,
         'serviceDescription': serviceDescription,
         'price': price,
+        'maximumTenant': maximumTenants,
+        'currentTenant': currentTenants,
         'discount': discount,
         'serviceType': serviceType,
         'imageURL': downloadURL,
@@ -60,7 +64,7 @@ class FirebaseService {
         showFloatingSnackBar(
           context,
           'Service created successfully.',
-          const Color(0xFF279778),
+          const Color(0xFF193147),
         );
         Navigator.of(context).pop();
       }
@@ -103,6 +107,8 @@ class FirebaseService {
     required bool isAvailable,
     required String serviceName,
     required String serviceDescription,
+    required int maximumTenants,
+    required int currentTenants,
     required double price,
     required int discount,
     required String serviceType,
@@ -134,6 +140,8 @@ class FirebaseService {
         'availability': isAvailable,
         'serviceName': serviceName,
         'serviceDescription': serviceDescription,
+        'maximumTenant': maximumTenants,
+        'currentTenant': currentTenants,
         'price': price,
         'discount': discount,
         'serviceType': serviceType,
@@ -147,7 +155,7 @@ class FirebaseService {
         showFloatingSnackBar(
           context,
           'Service updated successfully.',
-          const Color(0xFF279778),
+          const Color(0xFF193147),
         );
         Navigator.of(context).pop();
       }
@@ -201,7 +209,7 @@ class FirebaseService {
         showFloatingSnackBar(
           context,
           'Service deleted successfully.',
-          const Color(0xFF279778),
+          const Color(0xFF193147),
         );
       }
     } catch (e) {

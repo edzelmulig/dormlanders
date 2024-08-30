@@ -34,15 +34,15 @@ class _CustomRoleSelectionButtonState extends State<CustomRoleSelectionButton> {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: widget.isSelected
-              ? const Color(0xFFD7F5EC)
+              ? const Color(0xFFdde8f2)
               : const Color(0xFFf7f7f7),
-          foregroundColor: const Color(0xFFD7F5EC),
+          foregroundColor: const Color(0xFFdde8f2),
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
             side: BorderSide(
               color: widget.isSelected
-                  ? const Color(0xFF279778)
+                  ? const Color(0xFF193147)
                   : Colors.grey,
               width: 2.5,
             ),
@@ -66,7 +66,7 @@ class _CustomRoleSelectionButtonState extends State<CustomRoleSelectionButton> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: widget.isSelected
-                          ? const Color(0xFF279778)
+                          ? const Color(0xFF193147)
                           : const Color(0xFF3C3C40),
                     ),
                     child: Icon(

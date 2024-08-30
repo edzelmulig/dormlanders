@@ -89,7 +89,7 @@ class _ConfirmLocationState extends State<ConfirmLocation> {
             showFloatingSnackBar(
               context,
               "Location saved successfully.",
-              const Color(0xFF279778),
+              const Color(0xFF193147),
             );
             // NAVIGATE TO PROFILE SCREEN
             Navigator.of(context).pop();
@@ -148,7 +148,7 @@ class _ConfirmLocationState extends State<ConfirmLocation> {
               showFloatingSnackBar(
                 context,
                 "Location deleted successfully.",
-                const Color(0xFF279778),
+                const Color(0xFF193147),
               );
               // NAVIGATE TO PROFILE SCREEN
               Navigator.of(context).popUntil((route) => route.isFirst);
@@ -363,7 +363,7 @@ class _ConfirmLocationState extends State<ConfirmLocation> {
                           children: <TextSpan>[
                             TextSpan(
                               text:
-                                  "Your location may be used to help clients find you,"
+                                  "Your location may be used to help tenants find you,"
                                   " accurately, improve ads, and more. ",
                               style: TextStyle(
                                 fontSize: 15,
@@ -580,7 +580,7 @@ class _ConfirmLocationState extends State<ConfirmLocation> {
                           buttonText: "Save",
                           onPressed: _pinLocation,
                           buttonHeight: 55,
-                          buttonColor: const Color(0xFF279778),
+                          buttonColor: const Color(0xFF193147),
                           fontWeight: FontWeight.w500,
                           fontSize: 17,
                           fontColor: Colors.white,

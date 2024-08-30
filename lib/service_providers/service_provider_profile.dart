@@ -252,7 +252,7 @@ class _ServiceProviderProfileState extends State<ServiceProviderProfile> {
                     context,
                     const UserAccountInformation(
                       text: "Your data, like first name, and last name"
-                          "will be used to improve client discovery and more. ",
+                          " will be used to improve tenants discovery and more. ",
                     ),
                     1.0,
                     0.0,
@@ -269,7 +269,7 @@ class _ServiceProviderProfileState extends State<ServiceProviderProfile> {
                     context,
                     const UserPhoneNumber(
                       text: "Your phone number may be used to help"
-                          "clients connect with you, improve ads, and more",
+                          " tenants connect with you, improve ads, and more",
                     ),
                     1.0,
                     0.0,
@@ -286,7 +286,7 @@ class _ServiceProviderProfileState extends State<ServiceProviderProfile> {
                     context,
                     const UserEmailAddress(
                       text:
-                      "Your email address may be used to help clients "
+                      "Your email address may be used to help tenants "
                           "connect with you improve ads, and more. ",
                     ),
                     1.0,
@@ -298,7 +298,7 @@ class _ServiceProviderProfileState extends State<ServiceProviderProfile> {
               // LONG DESCRIPTIONS
               const CustomTextDescription(
                 descriptionText:
-                    "Your data will be saved and display for client "
+                    "Your data will be saved and display for tenants "
                     "discovery purposes. Your data like name, email, phone number, "
                     "and address may be also be used to connect you to clients "
                     "that might looking for your services.",
@@ -325,7 +325,7 @@ class _ServiceProviderProfileState extends State<ServiceProviderProfile> {
               // SHORT DESCRIPTIONS
               const CustomTextDescription(
                 descriptionText:
-                    "Pin point your location: Help us direct clients "
+                    "Pin point your location: Help us direct tenants "
                     "straight to you by sharing your precise position.",
                 hasLearnMore: "",
               ),

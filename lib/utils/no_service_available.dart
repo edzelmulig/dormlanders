@@ -28,7 +28,7 @@ class NoServiceAvailable extends StatelessWidget {
             text: const TextSpan(
               children: <TextSpan>[
                 TextSpan(
-                  text: "No services available\n",
+                  text: "No dormitories available\n",
                   style: TextStyle(
                     color: Color(0xFFc2c3c3),
                     fontSize: 20,
@@ -37,7 +37,7 @@ class NoServiceAvailable extends StatelessWidget {
                 ),
                 TextSpan(
                   text:
-                  "\nWhen you have services available, you'll see\nthem here.",
+                  "\nWhen you have listed your dormitory, you'll see\nthem here.",
                   style: TextStyle(
                     color: Color(0xFFc2c3c3),
                     fontSize: 15,

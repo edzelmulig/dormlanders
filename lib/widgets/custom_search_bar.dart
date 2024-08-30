@@ -37,7 +37,7 @@ class CustomSearchBar extends StatelessWidget {
         child: SizedBox(
           height: 45,
           child: TextFormField(
-            cursorColor: const Color(0xFF279778),
+            cursorColor: const Color(0xFF193147),
             controller: searchTextController,
             focusNode: searchFocusNode,
             decoration: InputDecoration(
@@ -74,7 +74,7 @@ class CustomSearchBar extends StatelessWidget {
                   ),
                 ),
               ),
-              hintText: "Search service or location",
+              hintText: "Search dormitory or location",
               hintStyle: const TextStyle(
                 color: Color(0xFF7C7C7D),
                 fontWeight: FontWeight.normal,
