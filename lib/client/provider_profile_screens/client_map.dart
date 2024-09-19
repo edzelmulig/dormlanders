@@ -158,10 +158,15 @@ class _ClientMapState extends State<ClientMap> {
     PolylinePoints polylinePoints = PolylinePoints();
 
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      apiKey,
-      PointLatLng(clientLocation.latitude, clientLocation.longitude),
-      PointLatLng(providerLocation.latitude, providerLocation.longitude),
+      googleApiKey: apiKey,  // Use the named parameter for the API key
+      request: PolylineRequest(  // Create a PolylineRequest object
+          origin: PointLatLng(clientLocation.latitude, clientLocation.longitude),  // Origin point
+          destination: PointLatLng(providerLocation.latitude, providerLocation.longitude),  // Destination point
+          mode: TravelMode.driving,  // You can specify the travel mode (optional)
+          wayPoints: []  // Optionally add waypoints, if any
+      ),
     );
+
 
     if (result.points.isNotEmpty) {
       for (var point in result.points) {

@@ -12,7 +12,20 @@
           "package_name": "com.example.dormlanders"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "665102315540-i36ra3h6d1rfbnutn6afhljiokemg6ik.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dormlanders",
+            "certificate_hash": "d0572b3e54c9fc639f50eb9717afe81deb5616ec"
+          }
+        },
+        {
+          "client_id": "665102315540-ogh4f0g22hdr1pc1bqo1jgrdglfqb46o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCsLXXsuSZSPst6BEyCga-9Pi71YQ43EE4"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "665102315540-ogh4f0g22hdr1pc1bqo1jgrdglfqb46o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "665102315540-gjchb78eatu4r4h5erg0qt3d3n8p4dv5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.dormlanders"
+              }
+            }
+          ]
         }
       }
     }

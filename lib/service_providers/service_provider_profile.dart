@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dormlanders/auth/landing_page.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:dormlanders/user_information/pin_location.dart';
 import 'package:dormlanders/user_information/account_information.dart';
@@ -51,6 +54,32 @@ class _ServiceProviderProfileState extends State<ServiceProviderProfile> {
     _connectionSubscription.cancel();
     _exitTimer.cancel();
     super.dispose();
+  }
+
+  Future<void> _logout() async {
+    try {
+      // Sign out from FirebaseAuth
+      await FirebaseAuth.instance.signOut();
+
+      // Sign out from Google to remove the cached session
+      final googleSignIn = GoogleSignIn();
+      await googleSignIn.signOut(); // Ensure cached Google credentials are cleared
+
+      // Navigate back to the LandingPage
+      if (context.mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const LandingPage(),
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Logout failed: $e')),
+        );
+      }
+    }
   }
 
   // CHECK CONNECTION

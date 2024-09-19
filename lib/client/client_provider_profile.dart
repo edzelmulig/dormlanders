@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dormlanders/auth/landing_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:dormlanders/client/client_messages.dart';
 import 'package:dormlanders/client/provider_profile_screens/client_map.dart';
@@ -72,10 +74,11 @@ class _ClientProviderProfileState extends State<ClientProviderProfile> {
     super.dispose();
   }
 
+
   // CHECK CONNECTION
   Future<void> _checkConnection() async {
     _connectionSubscription = InternetConnectionChecker().onStatusChange.listen(
-          (status) {
+      (status) {
         // Check if the context is still mounted
         if (!mounted) return;
 
@@ -289,19 +292,22 @@ class _ClientProviderProfileState extends State<ClientProviderProfile> {
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) {
                         var service = snapshot.data!.docs[index].data()
-                        as Map<String, dynamic>;
+                            as Map<String, dynamic>;
 
                         return ProviderServiceCardClientSide(
                           providerID: widget.providerID,
                           availability: service['availability'],
                           discount: service['discount'],
                           imageURL: service['imageURL'],
+                          kitchenURL: service['kitchenView'],
+                          comfortRoomURL: service['comfortRoomView'],
+                          bedRoomURL: service['bedRoomView'],
                           price: service['price'],
                           maximumTenants: service['maximumTenant'],
                           currentTenants: service['currentTenant'],
                           serviceDescription: service['serviceDescription'],
                           serviceName: service['serviceName'],
-                          serviceType: service['serviceType'],
+                          dormKeyFeatures: service['dormKeyFeatures'],
                           providerInfo: fetchedProviderInfo,
                           clientInfo: fetchUserInfo,
                         );
@@ -366,7 +372,7 @@ class _ClientProviderProfileState extends State<ClientProviderProfile> {
             children: <Widget>[
               VerifiedDisplayNameWidget(
                 displayName:
-                fetchedProviderInfo?['displayName'] ?? 'Loading...',
+                    fetchedProviderInfo?['displayName'] ?? 'Loading...',
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
                 iconSize: 20,
@@ -401,9 +407,7 @@ class _ClientProviderProfileState extends State<ClientProviderProfile> {
                       // DISPLAY
                       TextSpan(
                         text:
-                        "${fetchedProviderLocation?['placeDetails']['city'] ??
-                            'Loading...'} · ${widget.providerDistance
-                            .toStringAsFixed(0)}km away",
+                            "${fetchedProviderLocation?['placeDetails']['city'] ?? 'Loading...'} · ${widget.providerDistance.toStringAsFixed(0)}km away",
                         style: const TextStyle(
                           color: Color(0xFF9F9D9D),
                           fontWeight: FontWeight.normal,
@@ -449,8 +453,8 @@ class _ClientProviderProfileState extends State<ClientProviderProfile> {
                     .doc(userID)
                     .collection('my_appointments')
                     .where('clientID', isEqualTo: widget.providerID)
-                    .where('appointmentStatus', whereIn: ['new', 'confirmed'])
-                    .get();
+                    .where('appointmentStatus',
+                        whereIn: ['new', 'confirmed']).get();
 
                 try {
                   if (querySnapshot.docs.isNotEmpty) {
@@ -470,9 +474,10 @@ class _ClientProviderProfileState extends State<ClientProviderProfile> {
                       );
                     }
                   } else {
-                    if(context.mounted) {
+                    if (context.mounted) {
                       showFloatingSnackBar(
-                        context, "Appointment needed for location access.",
+                        context,
+                        "Appointment needed for location access.",
                         const Color(0xFF3C3C40),
                       );
                     }
@@ -508,7 +513,7 @@ class _ClientProviderProfileState extends State<ClientProviderProfile> {
               ),
               padding: EdgeInsets.zero,
             ),
-            onPressed:  () async {
+            onPressed: () async {
               String userID = FirebaseAuth.instance.currentUser!.uid;
               // CHECK IF THE CLIENT HAS APPOINTMENT
               QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -516,8 +521,8 @@ class _ClientProviderProfileState extends State<ClientProviderProfile> {
                   .doc(userID)
                   .collection('my_appointments')
                   .where('clientID', isEqualTo: widget.providerID)
-                  .where('appointmentStatus', whereIn: ['new', 'confirmed'])
-                  .get();
+                  .where('appointmentStatus',
+                      whereIn: ['new', 'confirmed']).get();
 
               try {
                 if (querySnapshot.docs.isNotEmpty) {
@@ -531,9 +536,10 @@ class _ClientProviderProfileState extends State<ClientProviderProfile> {
                     );
                   }
                 } else {
-                  if(context.mounted) {
+                  if (context.mounted) {
                     showFloatingSnackBar(
-                      context, "Appointment needed for direct messaging.",
+                      context,
+                      "Appointment needed for direct messaging.",
                       const Color(0xFF3C3C40),
                     );
                   }
@@ -556,7 +562,6 @@ class _ClientProviderProfileState extends State<ClientProviderProfile> {
 
           // SIZED BOX: SPACING
           const SizedBox(width: 10),
-
         ],
       ),
     );

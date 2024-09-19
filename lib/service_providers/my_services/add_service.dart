@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,18 +26,15 @@ class _AddServiceState extends State<AddService> {
   bool isDisconnectedSnackBarVisible = false;
   late Timer _exitTimer;
 
-
-
   // CONTROLLERS
   final _serviceNameController = TextEditingController();
   final _serviceDescriptionController = TextEditingController();
   final _priceController = TextEditingController();
   final _discountController = TextEditingController();
-  final _serviceTypeController = TextEditingController();
+  final _dormKeyFeaturesController = TextEditingController();
   final _imageURL = TextEditingController();
   final _maximumTenantsController = TextEditingController();
   final _currentTenantsController = TextEditingController();
-
 
   // FORM KEY DECLARATION
   final formKey = GlobalKey<FormState>();
@@ -46,6 +42,9 @@ class _AddServiceState extends State<AddService> {
   // VARIABLE DECLARATIONS
   String? selectedValue;
   PlatformFile? selectedImage;
+  PlatformFile? kitchenView;
+  PlatformFile? comfortRoomView;
+  PlatformFile? bedRoomView;
   String? imageURL;
   String? oldImage;
   bool isAvailable = true;
@@ -61,6 +60,7 @@ class _AddServiceState extends State<AddService> {
   final _descriptionFocusNode = FocusNode();
   final _priceFocusNode = FocusNode();
   final _discountFocusNode = FocusNode();
+  final _dormKeyFeaturesNode = FocusNode();
   final _maximumTenantsFocusNode = FocusNode();
   final _currentTenantsFocusNode = FocusNode();
 
@@ -82,7 +82,7 @@ class _AddServiceState extends State<AddService> {
     _serviceDescriptionController.dispose();
     _priceController.dispose();
     _discountController.dispose();
-    _serviceTypeController.dispose();
+    _dormKeyFeaturesController.dispose();
     _maximumTenantsController.dispose();
     _currentTenantsController.dispose();
     _imageURL.dispose();
@@ -93,7 +93,7 @@ class _AddServiceState extends State<AddService> {
   // CHECK CONNECTION
   Future<void> _checkConnection() async {
     _connectionSubscription = InternetConnectionChecker().onStatusChange.listen(
-          (status) {
+      (status) {
         // Check if the context is still mounted
         if (!mounted) return;
 
@@ -149,12 +149,42 @@ class _AddServiceState extends State<AddService> {
     // );
   }
 
-  // METHOD THAT WILL HANDLE THE IMAGE SELECTION FROM THE LOCAL STORAGE
+  // FRONT VIEW IMAGE
   void handleImageSelection() async {
     final selected = await ProviderServices.selectImage();
     if (selected != null) {
       setState(() {
         selectedImage = selected;
+      });
+    }
+  }
+
+  // KITCHEN VIEW IMAGE
+  void kitchenViewSelection() async {
+    final selected = await ProviderServices.selectImage();
+    if (selected != null) {
+      setState(() {
+        kitchenView = selected;
+      });
+    }
+  }
+
+  // COMFORT ROOM VIEW IMAGE
+  void comfortRoomViewSelection() async {
+    final selected = await ProviderServices.selectImage();
+    if (selected != null) {
+      setState(() {
+        comfortRoomView = selected;
+      });
+    }
+  }
+
+  // BED ROOM VIEW IMAGE
+  void bedRoomViewSelection() async {
+    final selected = await ProviderServices.selectImage();
+    if (selected != null) {
+      setState(() {
+        bedRoomView = selected;
       });
     }
   }
@@ -171,8 +201,11 @@ class _AddServiceState extends State<AddService> {
       serviceDescription: _serviceDescriptionController.text,
       price: double.tryParse(_priceController.text) ?? 0.0,
       discount: int.tryParse(_discountController.text) ?? 0,
-      serviceType: _serviceTypeController.text,
+      dormKeyFeatures: _dormKeyFeaturesController.text,
       selectedImage: selectedImage,
+      kitchenView: kitchenView,
+      comfortRoomView: comfortRoomView,
+      bedRoomView: bedRoomView,
     );
   }
 
@@ -190,7 +223,7 @@ class _AddServiceState extends State<AddService> {
     if (wordCount > maxWordCount) {
       // Truncate the text to the maximum word count
       List<String> words =
-      text.split(RegExp(r'\s+')).where((word) => word.isNotEmpty).toList();
+          text.split(RegExp(r'\s+')).where((word) => word.isNotEmpty).toList();
       String newText =
           '${words.take(maxWordCount).join(' ')} '; // Add a space at the end for better UX
       _serviceDescriptionController.value = TextEditingValue(
@@ -199,7 +232,6 @@ class _AddServiceState extends State<AddService> {
       );
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -398,8 +430,10 @@ class _AddServiceState extends State<AddService> {
 
                         if (wordCount > maxWordCount) {
                           // Truncate the input text to the maximum word count
-                          List<String> words =
-                          value.split(RegExp(r'\s+')).where((word) => word.isNotEmpty).toList();
+                          List<String> words = value
+                              .split(RegExp(r'\s+'))
+                              .where((word) => word.isNotEmpty)
+                              .toList();
                           String truncatedText =
                               '${words.take(maxWordCount).join(' ')} '; // Add a space at the end for better UX
                           _serviceDescriptionController.text = truncatedText;
@@ -408,7 +442,7 @@ class _AddServiceState extends State<AddService> {
                         return null;
                       },
                       hintText: "Description here...",
-                      minLines: 1,
+                      minLines: 2,
                       maxLines: 5,
                       isPassword: false,
                     ),
@@ -455,7 +489,6 @@ class _AddServiceState extends State<AddService> {
                       isPassword: false,
                     ),
 
-
                     // CURRENT NUMBER OF TENANTS
                     // SIZED BOX: SPACING
                     const SizedBox(height: 10),
@@ -488,8 +521,10 @@ class _AddServiceState extends State<AddService> {
                         }
 
                         // Parse the data
-                        final currentTenants = int.tryParse(_currentTenantsController.text);
-                        final maximumTenants = int.tryParse(_maximumTenantsController.text);
+                        final currentTenants =
+                            int.tryParse(_currentTenantsController.text);
+                        final maximumTenants =
+                            int.tryParse(_maximumTenantsController.text);
 
                         if (currentTenants == null || maximumTenants == null) {
                           return "Invalid input";
@@ -506,7 +541,6 @@ class _AddServiceState extends State<AddService> {
                       maxLines: 1,
                       isPassword: false,
                     ),
-
 
                     // PRICE AND DISCOUNT
                     Row(
@@ -575,7 +609,7 @@ class _AddServiceState extends State<AddService> {
                               CustomTextField(
                                 controller: _discountController,
                                 currentFocusNode: _discountFocusNode,
-                                nextFocusNode: null,
+                                nextFocusNode: _dormKeyFeaturesNode,
                                 validatorText: "Discount is required",
                                 keyBoardType: TextInputType.number,
                                 inputFormatters: <TextInputFormatter>[
@@ -600,9 +634,9 @@ class _AddServiceState extends State<AddService> {
 
                     const SizedBox(height: 10),
 
-                    // LABEL: SERVICE DESCRIPTION
+                    // LABEL: DORM KEY FEATURES
                     const CustomTextDisplay(
-                      receivedText: "Inclusion",
+                      receivedText: "Dorm Key Feature",
                       receivedTextSize: 15,
                       receivedTextWeight: FontWeight.w500,
                       receivedLetterSpacing: 0,
@@ -612,110 +646,55 @@ class _AddServiceState extends State<AddService> {
                     // SIZED BOX: SPACING
                     const SizedBox(height: 2),
 
-                    // DROP DOWN: SERVICE TYPE
-                    DropdownButtonFormField2<String>(
-                      isExpanded: true,
-                      decoration: InputDecoration(
-                        contentPadding:
-                            const EdgeInsets.symmetric(vertical: 16),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                            color: Color(0xFF193147),
-                            width: 1.5,
-                          ),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: const BorderSide(
-                            color: Color(0xFFe91b4f),
-                            width: 2,
-                          ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: const BorderSide(
-                            color: Color(0xFFe91b4f),
-                            width: 2.0,
-                          ),
-                        ),
-                        fillColor: Colors.white,
-                        filled: true,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                            color: Color(0xFFBDBDC7),
-                            // Set color for enabled state
-                            width: 1.5, // Set width for enabled state
-                          ),
-                        ),
-                      ),
-                      hint: const Text(
-                        'Service Type',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                          color: Color(0xFF6c7687),
-                        ),
-                      ),
-                      items: serviceType
-                          .map((item) => DropdownMenuItem<String>(
-                                value: item,
-                                child: Text(
-                                  item,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.normal,
-                                    color: Color(0xFF3C3C40),
-                                  ),
-                                ),
-                              ))
-                          .toList(),
+                    // TEXT FIELD: DORM KEY FEATURES
+                    // TEXT FIELD: DESCRIPTION
+                    CustomTextField(
+                      controller: _dormKeyFeaturesController,
+                      currentFocusNode: _dormKeyFeaturesNode,
+                      nextFocusNode: null,
+                      keyBoardType: TextInputType.multiline,
+                      inputFormatters: null,
+                      validatorText: "Description is required",
                       validator: (value) {
-                        if (value == null) {
-                          return 'Please select service type.';
+                        if (value!.isEmpty) {
+                          return "Description is required";
+                        }
+                        // Split the input string into words using spaces and count them
+                        int wordCount = value
+                            .trim()
+                            .split(RegExp(r'\s+'))
+                            .where((word) => word.isNotEmpty)
+                            .length;
+
+                        // DEFINE MAXIMUM ALLOWED WORDS
+                        int maxWordCount = 30;
+
+                        if (wordCount > maxWordCount) {
+                          // Truncate the input text to the maximum word count
+                          List<String> words = value
+                              .split(RegExp(r'\s+'))
+                              .where((word) => word.isNotEmpty)
+                              .toList();
+                          String truncatedText =
+                              '${words.take(maxWordCount).join(' ')} '; // Add a space at the end for better UX
+                          _serviceDescriptionController.text = truncatedText;
+                          return "Dorm key features must be less than $maxWordCount words";
                         }
                         return null;
                       },
-                      onChanged: (value) {
-                        // //Do something when selected item is changed.
-                        setState(() {
-                          selectedValue = value.toString();
-                          _serviceTypeController.text = value.toString();
-                        });
-                      },
-                      onSaved: (value) {
-                        _serviceTypeController.text = value.toString();
-                      },
-                      buttonStyleData: const ButtonStyleData(
-                        padding: EdgeInsets.only(right: 15),
-                      ),
-                      iconStyleData: const IconStyleData(
-                        icon: Icon(
-                          Icons.arrow_drop_down,
-                          color: Color(0xFF3C3C40),
-                        ),
-                        iconSize: 26,
-                      ),
-                      dropdownStyleData: DropdownStyleData(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      menuItemStyleData: const MenuItemStyleData(
-                        padding: EdgeInsets.symmetric(horizontal: 17),
-                      ),
+                      hintText: "Dormitory's key features...",
+                      minLines: 2,
+                      maxLines: 5,
+                      isPassword: false,
                     ),
+
 
                     // SIZED BOX: SPACING
                     const SizedBox(height: 10),
 
                     // LABEL: DISPLAY PHOTO
                     const CustomTextDisplay(
-                      receivedText: "Front View of Dormitory",
+                      receivedText: "Front View",
                       receivedTextSize: 15,
                       receivedTextWeight: FontWeight.w500,
                       receivedLetterSpacing: 0,
@@ -740,7 +719,7 @@ class _AddServiceState extends State<AddService> {
                           width: 1.5, // Set width for enabled state
                         ),
                         elevation: 0,
-                        minimumSize: const Size(double.infinity, 80),
+                        minimumSize: const Size(double.infinity, 125),
                       ),
                       onPressed: () {
                         if (selectedImage == null) {
@@ -795,8 +774,8 @@ class _AddServiceState extends State<AddService> {
                                     color: Colors.grey,
                                   ),
                                   CustomTextDisplay(
-                                    receivedText: "Add photo",
-                                    receivedTextSize: 15,
+                                    receivedText: "Front view",
+                                    receivedTextSize: 12,
                                     receivedTextWeight: FontWeight.normal,
                                     receivedLetterSpacing: 0,
                                     receivedTextColor: Colors.grey,
@@ -806,6 +785,296 @@ class _AddServiceState extends State<AddService> {
                             ),
                     ),
 
+                    // KITCHEN VIEW
+                    // SIZED BOX: SPACING
+                    const SizedBox(height: 10),
+
+                    // LABEL: DISPLAY PHOTO
+                    const CustomTextDisplay(
+                      receivedText: "Kitchen View",
+                      receivedTextSize: 15,
+                      receivedTextWeight: FontWeight.w500,
+                      receivedLetterSpacing: 0,
+                      receivedTextColor: Color(0xFF242424),
+                    ),
+
+                    // SIZED BOX: SPACING
+                    const SizedBox(height: 2),
+
+                    // UPLOAD IMAGE CONTAINER
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        backgroundColor: Colors.white,
+                        foregroundColor: const Color(0xFFBDBDC7),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        side: const BorderSide(
+                          color: Color(0xFFBDBDC7),
+                          // Set color for enabled state
+                          width: 1.5, // Set width for enabled state
+                        ),
+                        elevation: 0,
+                        minimumSize: const Size(double.infinity, 125),
+                      ),
+                      onPressed: () {
+                        if (kitchenView == null) {
+                          kitchenViewSelection();
+                        }
+                      },
+                      child: kitchenView != null
+                          ? Stack(
+                              children: <Widget>[
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.file(
+                                    File(kitchenView!.path!),
+                                    // Use the path of the selected image
+                                    width: double.infinity,
+                                    height: 120,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                Positioned(
+                                  right: 11,
+                                  top: 10,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        kitchenView = null;
+                                      });
+                                    },
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                        color: Colors.black54,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Container(
+                                        margin: const EdgeInsets.all(5),
+                                        child: const Icon(
+                                          Icons.clear_rounded,
+                                          color: Color(0xFFF5F5F5),
+                                          size: 15,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : const Center(
+                              child: Column(
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.add_a_photo_rounded,
+                                    color: Colors.grey,
+                                  ),
+                                  CustomTextDisplay(
+                                    receivedText: "Kitchen view",
+                                    receivedTextSize: 12,
+                                    receivedTextWeight: FontWeight.normal,
+                                    receivedLetterSpacing: 0,
+                                    receivedTextColor: Colors.grey,
+                                  ),
+                                ],
+                              ),
+                            ),
+                    ),
+
+                    // COMFORT ROOM VIEW
+                    // SIZED BOX: SPACING
+                    const SizedBox(height: 10),
+
+                    // LABEL: DISPLAY PHOTO
+                    const CustomTextDisplay(
+                      receivedText: "Comfort Room View",
+                      receivedTextSize: 15,
+                      receivedTextWeight: FontWeight.w500,
+                      receivedLetterSpacing: 0,
+                      receivedTextColor: Color(0xFF242424),
+                    ),
+
+                    // SIZED BOX: SPACING
+                    const SizedBox(height: 2),
+
+                    // UPLOAD IMAGE CONTAINER
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        backgroundColor: Colors.white,
+                        foregroundColor: const Color(0xFFBDBDC7),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        side: const BorderSide(
+                          color: Color(0xFFBDBDC7),
+                          // Set color for enabled state
+                          width: 1.5, // Set width for enabled state
+                        ),
+                        elevation: 0,
+                        minimumSize: const Size(double.infinity, 125),
+                      ),
+                      onPressed: () {
+                        if (comfortRoomView == null) {
+                          comfortRoomViewSelection();
+                        }
+                      },
+                      child: comfortRoomView != null
+                          ? Stack(
+                              children: <Widget>[
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.file(
+                                    File(comfortRoomView!.path!),
+                                    // Use the path of the selected image
+                                    width: double.infinity,
+                                    height: 120,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                Positioned(
+                                  right: 11,
+                                  top: 10,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        comfortRoomView = null;
+                                      });
+                                    },
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                        color: Colors.black54,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Container(
+                                        margin: const EdgeInsets.all(5),
+                                        child: const Icon(
+                                          Icons.clear_rounded,
+                                          color: Color(0xFFF5F5F5),
+                                          size: 15,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : const Center(
+                              child: Column(
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.add_a_photo_rounded,
+                                    color: Colors.grey,
+                                  ),
+                                  CustomTextDisplay(
+                                    receivedText: "Comfort room view",
+                                    receivedTextSize: 12,
+                                    receivedTextWeight: FontWeight.normal,
+                                    receivedLetterSpacing: 0,
+                                    receivedTextColor: Colors.grey,
+                                  ),
+                                ],
+                              ),
+                            ),
+                    ),
+
+                    // KITCHEN VIEW
+                    // SIZED BOX: SPACING
+                    const SizedBox(height: 10),
+
+                    // LABEL: DISPLAY PHOTO
+                    const CustomTextDisplay(
+                      receivedText: "Bed Room View",
+                      receivedTextSize: 15,
+                      receivedTextWeight: FontWeight.w500,
+                      receivedLetterSpacing: 0,
+                      receivedTextColor: Color(0xFF242424),
+                    ),
+
+                    // SIZED BOX: SPACING
+                    const SizedBox(height: 2),
+
+                    // UPLOAD IMAGE CONTAINER
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        backgroundColor: Colors.white,
+                        foregroundColor: const Color(0xFFBDBDC7),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        side: const BorderSide(
+                          color: Color(0xFFBDBDC7),
+                          // Set color for enabled state
+                          width: 1.5, // Set width for enabled state
+                        ),
+                        elevation: 0,
+                        minimumSize: const Size(double.infinity, 125),
+                      ),
+                      onPressed: () {
+                        if (bedRoomView == null) {
+                          bedRoomViewSelection();
+                        }
+                      },
+                      child: bedRoomView != null
+                          ? Stack(
+                              children: <Widget>[
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.file(
+                                    File(bedRoomView!.path!),
+                                    // Use the path of the selected image
+                                    width: double.infinity,
+                                    height: 120,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                Positioned(
+                                  right: 11,
+                                  top: 10,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        bedRoomView = null;
+                                      });
+                                    },
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                        color: Colors.black54,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Container(
+                                        margin: const EdgeInsets.all(5),
+                                        child: const Icon(
+                                          Icons.clear_rounded,
+                                          color: Color(0xFFF5F5F5),
+                                          size: 15,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : const Center(
+                              child: Column(
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.add_a_photo_rounded,
+                                    color: Colors.grey,
+                                  ),
+                                  CustomTextDisplay(
+                                    receivedText: "Bed Room view",
+                                    receivedTextSize: 12,
+                                    receivedTextWeight: FontWeight.normal,
+                                    receivedLetterSpacing: 0,
+                                    receivedTextColor: Colors.grey,
+                                  ),
+                                ],
+                              ),
+                            ),
+                    ),
 
                     // SIZED BOX: SPACING
                     const SizedBox(height: 10),

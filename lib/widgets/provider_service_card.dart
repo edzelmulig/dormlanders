@@ -80,7 +80,7 @@ class ProviderServiceCard extends StatelessWidget {
                   minFontSize: 15,
                 ),
                 subtitle: AutoSizeText(
-                  service['serviceType'] ?? 'N/A',
+                  service['dormKeyFeatures'] ?? 'N/A',
                   style: const TextStyle(
                     color: Color(0xFF9F9D9D),
                     fontWeight: FontWeight.normal,

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dormlanders/auth/landing_page.dart';
 import 'package:dormlanders/widgets/custom_text_display.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 // DISPLAY DELETE WARNING MODAL
 void showDeleteWarning(
@@ -138,18 +139,31 @@ void showLogoutModal(BuildContext context) {
             SizedBox(
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   // LOG OUT, NAVIGATE TO LANDING PAGE AGAIN
-                  FirebaseAuth.instance.signOut();
-                  Navigator.of(context, rootNavigator: true)
-                      .pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) {
-                        return const LandingPage();
-                      },
-                    ),
-                        (_) => false,
-                  );
+                  final googleSignIn = GoogleSignIn();
+                  await googleSignIn.signOut();
+                  // Only attempt to disconnect if there is an active Google session
+                  if (await googleSignIn.isSignedIn()) {
+                    try {
+                      await googleSignIn.disconnect(); // Disconnects the Google account fully
+                    } catch (e) {
+                      // If disconnect fails, log it and continue
+                      debugPrint('Error disconnecting Google account: $e');
+                    }
+                  }
+
+                  if(context.mounted) {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return const LandingPage();
+                        },
+                      ),
+                          (_) => false,
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,

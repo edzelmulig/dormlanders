@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:dormlanders/auth/dynamic_home_page.dart';
 import 'package:dormlanders/auth/landing_page.dart';
@@ -10,7 +11,80 @@ import 'package:dormlanders/utils/custom_loading.dart';
 import 'package:dormlanders/utils/custom_snackbar.dart';
 import 'package:dormlanders/widgets/custom_alert_dialog.dart';
 
+final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+
 class AuthService {
+
+  // Add Google Sign-In
+  Future<void> signInWithGoogle({
+    required BuildContext context,
+  }) async {
+    try {
+      // Show loading indicator
+      if (context.mounted) {
+        showLoadingIndicator(context);
+      }
+
+      // Perform Google Sign-In
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        // User canceled the sign-in
+        if (context.mounted) {
+          Navigator.of(context).pop();
+        }
+        return;
+      }
+
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Sign in with Firebase
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+
+
+      // Navigate to home page after successful sign-in
+      if (context.mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => const DynamicHomePage(),
+          ),
+        );
+
+        // Dismiss loading indicator
+        if (context.mounted) {
+          Navigator.of(context).pop();
+        }
+      }
+
+    } on FirebaseAuthException catch (e) {
+      // Handle FirebaseAuthException errors
+      String errorMessage = 'Error signing in with Google. Please try again.';
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errorMessage)));
+      }
+
+      // Dismiss loading dialog
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
+    } catch (e) {
+      // Handle other errors
+      debugPrint('Error signing in with Google: $e');
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error signing in with Google: $e')));
+      }
+      if (context.mounted) {
+        if (Navigator.of(context).canPop()) Navigator.of(context).pop();
+      }
+    }
+  }
+
 
   // SIGN IN AUTHENTICATION
   Future signIn({

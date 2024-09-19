@@ -146,6 +146,7 @@ class _MyServicesState extends State<MyServices> {
             if (snapshot.data?.docs.isEmpty ?? true) {
               // DISPLAY THERE IS NO AVAILABLE SERVICES
               return const NoServiceAvailable();
+
             } else {
               // DISPLAY AVAILABLE SERVICES: AS GRIDVIEW
               return GridView.builder(

@@ -23,8 +23,10 @@ class SocialMediaButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 110,
+    return Container(
+      padding: const EdgeInsets.only(left: 50, right: 50),
+      width: double.infinity,
+      height: 50,
       child: ElevatedButton(
         onPressed: receivedCallback,
         style: ElevatedButton.styleFrom(
@@ -35,32 +37,27 @@ class SocialMediaButton extends StatelessWidget {
           backgroundColor: receivedColor,
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center, // Center elements in Row
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(left: 8.0),
               child: CircleAvatar(
                 backgroundColor: Colors.white,
                 radius: 13,
                 child: Image.asset(
                   receivedLogo,
-                  width: 30,
-                  height: 30,
+                  width: 24, // Adjusted logo size for better centering
+                  height: 24,
                 ),
               ),
             ),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.only(right: 10),
-                child: Text(
-                  receivedText,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: receivedTextSize,
-                    fontWeight: receivedFontWeight,
-                  ),
-                ),
+            const SizedBox(width: 10), // Space between logo and text
+            Text(
+              receivedText,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: receivedTextSize,
+                fontWeight: receivedFontWeight,
               ),
             ),
           ],

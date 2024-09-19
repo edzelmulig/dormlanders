@@ -22,8 +22,11 @@ class FirebaseService {
     required int maximumTenants,
     required int currentTenants,
     required int discount,
-    required String serviceType,
+    required String dormKeyFeatures,
     PlatformFile? selectedImage,
+    PlatformFile? kitchenView,
+    PlatformFile? comfortRoomView,
+    PlatformFile? bedRoomView,
   }) async {
     if (!formKey.currentState!.validate()) {
       return;
@@ -35,10 +38,10 @@ class FirebaseService {
       final userCredential = FirebaseAuth.instance.currentUser;
       if (userCredential == null) throw Exception("User not signed in");
 
-      final String? downloadURL = await ProviderServices.uploadFile(
-        selectedImage,
-      );
-
+      final String? selectedImageURL = await ProviderServices.uploadFile(selectedImage);
+      final String? kitchenViewURL = await ProviderServices.uploadFile(kitchenView);
+      final String? comfortRoomViewURL = await ProviderServices.uploadFile(comfortRoomView);
+      final String? bedRoomViewURL = await ProviderServices.uploadFile(bedRoomView);
 
 
       await FirebaseFirestore.instance
@@ -53,8 +56,11 @@ class FirebaseService {
         'maximumTenant': maximumTenants,
         'currentTenant': currentTenants,
         'discount': discount,
-        'serviceType': serviceType,
-        'imageURL': downloadURL,
+        'dormKeyFeatures': dormKeyFeatures,
+        'imageURL': selectedImageURL,
+        'kitchenView': kitchenViewURL,
+        'comfortRoomView': comfortRoomViewURL,
+        'bedRoomView': bedRoomViewURL,
       });
 
       // IF CREATING SERVICE SUCCESSFUL
@@ -111,10 +117,16 @@ class FirebaseService {
     required int currentTenants,
     required double price,
     required int discount,
-    required String serviceType,
+    required String dormKeyFeatures,
     required String serviceID,
     PlatformFile? selectedImage,
+    PlatformFile? kitchenView,
+    PlatformFile? comfortRoomView,
+    PlatformFile? bedRoomView,
     String? oldImageURL,
+    String? oldKitchenViewURL,
+    String? oldComfortRoomViewURL,
+    String? oldBedRoomViewURL,
   }) async {
     if (!formKey.currentState!.validate()) {
       return;
@@ -131,6 +143,40 @@ class FirebaseService {
         oldImageURL: oldImageURL,
       );
 
+
+      debugPrint("Front View URL: $downloadURL");
+
+
+      final String? kitchenURL = await ProviderServices.uploadFile(
+        kitchenView,
+        oldImageURL: oldKitchenViewURL,
+      );
+
+
+      debugPrint("Kitchen View URL: $kitchenURL");
+
+
+      final String? comfortRoomURL = await ProviderServices.uploadFile(
+        comfortRoomView,
+        oldImageURL: oldComfortRoomViewURL,
+      );
+
+
+      debugPrint("Comfort View URL: $comfortRoomURL");
+
+
+      final String? bedRoomURL = await ProviderServices.uploadFile(
+        bedRoomView,
+        oldImageURL: oldBedRoomViewURL,
+      );
+
+
+      debugPrint("Bed Room View URL: $bedRoomURL");
+
+
+
+
+
       await FirebaseFirestore.instance
           .collection('users')
           .doc(userCredential.uid)
@@ -144,8 +190,11 @@ class FirebaseService {
         'currentTenant': currentTenants,
         'price': price,
         'discount': discount,
-        'serviceType': serviceType,
+        'dormKeyFeatures': dormKeyFeatures,
         'imageURL': downloadURL ?? oldImageURL,
+        'kitchenView': kitchenURL ?? oldKitchenViewURL,
+        'comfortRoomView': comfortRoomURL ?? oldComfortRoomViewURL,
+        'bedRoomView': bedRoomURL ?? oldBedRoomViewURL,
       });
 
       // IF ADDING SERVICE SUCCESSFUL
@@ -164,7 +213,7 @@ class FirebaseService {
       if (context.mounted) {
         showFloatingSnackBar(
           context,
-          "Error updating service: ${e.toString()}",
+          "Error updating services: ${e.toString()}",
           const Color(0xFFe91b4f),
         );
         // Dismiss loading dialog
@@ -234,7 +283,6 @@ class FirebaseService {
     required String clientID,
     required String providerID,
     required String serviceName,
-    required String serviceType,
     required String date,
     required String time,
     required PlatformFile? selectedImage,
@@ -263,7 +311,6 @@ class FirebaseService {
           .add({
         'clientID': clientID,
         'serviceName': serviceName,
-        'serviceType': serviceType,
         'receiptImage': downloadURL,
         'appointmentDate': date,
         'appointmentTime': time,

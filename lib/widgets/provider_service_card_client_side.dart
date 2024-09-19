@@ -11,12 +11,15 @@ class ProviderServiceCardClientSide extends StatelessWidget {
   final bool availability;
   final int discount;
   final String imageURL;
+  final String kitchenURL;
+  final String comfortRoomURL;
+  final String bedRoomURL;
   final double price;
   final int maximumTenants;
   final int currentTenants;
   final String serviceDescription;
   final String serviceName;
-  final String serviceType;
+  final String dormKeyFeatures;
   final Map<String, dynamic>? providerInfo;
   final Map<String, dynamic>? clientInfo;
 
@@ -26,16 +29,18 @@ class ProviderServiceCardClientSide extends StatelessWidget {
     required this.availability,
     required this.discount,
     required this.imageURL,
+    required this.kitchenURL,
+    required this.comfortRoomURL,
+    required this.bedRoomURL,
     required this.price,
     required this.maximumTenants,
     required this.currentTenants,
     required this.serviceDescription,
     required this.serviceName,
-    required this.serviceType,
+    required this.dormKeyFeatures,
     required this.providerInfo,
     required this.clientInfo,
   });
-
 
   @override
   Widget build(BuildContext context) {
@@ -57,12 +62,15 @@ class ProviderServiceCardClientSide extends StatelessWidget {
                 // SERVICE IMAGE
                 ServiceImageWidget(
                   imageURL: imageURL,
+                  kitchenURL: kitchenURL,
+                  comfortRoomURL: comfortRoomURL,
+                  bedRoomURL: bedRoomURL,
                   availability: availability,
                 ),
 
                 // SERVICE NAME
                 Padding(
-                  padding: const EdgeInsets.only(top: 5, bottom: 5),
+                  padding: const EdgeInsets.only(top: 10, bottom: 5),
                   child: CustomTextDisplay(
                     receivedText: serviceName,
                     receivedTextSize: 17,
@@ -74,7 +82,7 @@ class ProviderServiceCardClientSide extends StatelessWidget {
 
                 // SERVICE TYPE
                 CustomTextDisplay(
-                  receivedText: "Inclusion: $serviceType",
+                  receivedText: "Key Features: $dormKeyFeatures",
                   receivedTextSize: 13,
                   receivedTextWeight: FontWeight.w500,
                   receivedLetterSpacing: 0,
@@ -86,7 +94,7 @@ class ProviderServiceCardClientSide extends StatelessWidget {
 
                 // SERVICE DESCRIPTION
                 Text(
-                  "Description: $serviceDescription",
+                  "Additional Info/Landmark: $serviceDescription",
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -100,15 +108,13 @@ class ProviderServiceCardClientSide extends StatelessWidget {
                 // SIZED BOX: SPACING
                 const SizedBox(height: 10),
 
-
                 Row(
-                  children: <Widget> [
+                  children: <Widget>[
                     const Icon(
                       Icons.person_pin_rounded,
                       size: 22,
                       color: Color(0xFF3C4D48),
                     ),
-
 
                     // SERVICE DESCRIPTION
                     Text(
@@ -117,14 +123,15 @@ class ProviderServiceCardClientSide extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         height: 1.2,
-                        color: currentTenants == maximumTenants ? Colors.red : Colors.grey,
+                        color: currentTenants == maximumTenants
+                            ? Colors.red
+                            : Colors.grey,
                         fontSize: 13,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
                 ),
-
 
                 const SizedBox(height: 10),
 
@@ -161,44 +168,46 @@ class ProviderServiceCardClientSide extends StatelessWidget {
                 // APPOINTMENT BUTTON
                 availability && currentTenants < maximumTenants
                     ? PrimaryCustomButton(
-                  buttonText: "Book Reservation",
-                  onPressed: () {
-                    navigateWithSlideFromRight(
-                      context,
-                      ClientAppointment(
-                        providerID: providerID,
-                        imageURL: imageURL,
-                        providerInfo: providerInfo,
-                        clientInfo: clientInfo,
-                        serviceName: serviceName,
-                        discountedPrice: discountedPrice,
-                        price: price,
-                        discount: discount,
-                        serviceType: serviceType,
-                      ),
-                      0.0,
-                      1.0,
-                    );
-                  },
-                  buttonHeight: 40,
-                  buttonColor: const Color(0xFF193147),
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                  fontColor: Colors.white,
-                  elevation: 0,
-                  borderRadius: 7,
-                )
+                        buttonText: "Book Reservation",
+                        onPressed: () {
+                          navigateWithSlideFromRight(
+                            context,
+                            ClientAppointment(
+                              providerID: providerID,
+                              imageURL: imageURL,
+                              providerInfo: providerInfo,
+                              clientInfo: clientInfo,
+                              serviceName: serviceName,
+                              discountedPrice: discountedPrice,
+                              price: price,
+                              discount: discount,
+                              dormKeyFeatures: dormKeyFeatures,
+                            ),
+                            0.0,
+                            1.0,
+                          );
+                        },
+                        buttonHeight: 40,
+                        buttonColor: const Color(0xFF193147),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        fontColor: Colors.white,
+                        elevation: 0,
+                        borderRadius: 7,
+                      )
                     : PrimaryCustomButton(
-                  buttonText: "No Vacant",
-                  onPressed: () {}, // Disables the button
-                  buttonHeight: 40,
-                  buttonColor: Colors.grey, // Change color to indicate disabled state
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                  fontColor: Colors.white,
-                  elevation: 0,
-                  borderRadius: 7,
-                ),
+                        buttonText: "No Vacant",
+                        onPressed: () {},
+                        // Disables the button
+                        buttonHeight: 40,
+                        buttonColor: Colors.grey,
+                        // Change color to indicate disabled state
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        fontColor: Colors.white,
+                        elevation: 0,
+                        borderRadius: 7,
+                      ),
               ],
             ),
             discount != 0

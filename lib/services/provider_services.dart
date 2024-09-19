@@ -22,7 +22,7 @@ class ProviderServices {
     PlatformFile? selectedImage, {
     String? oldImageURL,
   }) async {
-    if (selectedImage == null) {
+    if (selectedImage == null || selectedImage.path == null) {
       return;
     }
 

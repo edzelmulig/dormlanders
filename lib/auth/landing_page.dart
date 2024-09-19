@@ -1,22 +1,16 @@
+import 'package:dormlanders/utils/custom_snackbar.dart';
+import 'package:dormlanders/widgets/custom_social_media_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dormlanders/auth/select_role.dart';
 import 'package:dormlanders/auth/forgot_password_page.dart';
 import 'package:dormlanders/services/auth_service.dart';
 import 'package:dormlanders/services/shared_preferences.dart';
-import 'package:dormlanders/utils/custom_snackbar.dart';
 import 'package:dormlanders/widgets/custom_button.dart';
 import 'package:dormlanders/widgets/custom_image_display.dart';
-import 'package:dormlanders/widgets/custom_social_media_button.dart';
 import 'package:dormlanders/widgets/custom_text_display.dart';
-
-class LandingPage extends StatefulWidget {
-  const LandingPage({
-    super.key,
-  });
-
-  @override
-  State<LandingPage> createState() => _LandingPageState();
-}
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:social_login_buttons/social_login_buttons.dart';
 
 class _LandingPageState extends State<LandingPage> {
   // TextEditingController declarations
@@ -82,7 +76,6 @@ class _LandingPageState extends State<LandingPage> {
             children: <Widget>[
               // DORMLANDERS LOGO
               Container(
-
                 margin: EdgeInsets.only(top: logoMargin, bottom: 0),
                 child: const CustomImageDisplay(
                   receivedImageLocation: "images/dormlanders_logo.png",
@@ -94,7 +87,6 @@ class _LandingPageState extends State<LandingPage> {
                   receivedImageHeight: 150,
                 ),
               ),
-
 
               // Sign In TEXT
               Container(
@@ -391,7 +383,6 @@ class _LandingPageState extends State<LandingPage> {
                       ),
                     ),
 
-
                     // SIGN UP TEXT
                     Container(
                       alignment: Alignment.center,
@@ -429,6 +420,26 @@ class _LandingPageState extends State<LandingPage> {
                         ],
                       ),
                     ),
+
+                    // SIZED BOX FOR SPACING
+                    const SizedBox(
+                      height: 50,
+                    ),
+
+                    // Continue with Google Button
+                    SocialMediaButton(
+                      receivedLogo: 'images/google_logo.png',
+                      receivedText: "Continue with Google",
+                      receivedTextSize: 17.0,
+                      receivedBorderRadius: 10.0,
+                      receivedFontWeight: FontWeight.w500,
+                      receivedColor: const Color(0xFFD83026),
+                      receivedCallback: () async {
+                        // SIGN IN USING GOOGLE
+                        await AuthService()
+                            .signInWithGoogle(context: context);
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -438,4 +449,13 @@ class _LandingPageState extends State<LandingPage> {
       ),
     );
   }
+}
+
+class LandingPage extends StatefulWidget {
+  const LandingPage({
+    super.key,
+  });
+
+  @override
+  State<LandingPage> createState() => _LandingPageState();
 }

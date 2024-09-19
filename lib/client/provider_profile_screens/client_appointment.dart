@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
-import 'package:dormlanders/constants.dart';
 import 'package:dormlanders/services/firebase_services.dart';
 import 'package:dormlanders/services/provider_services.dart';
 import 'package:dormlanders/utils/custom_snackbar.dart';
@@ -20,8 +19,6 @@ import 'package:dormlanders/widgets/custom_image_display.dart';
 import 'package:dormlanders/widgets/custom_text_display.dart';
 import 'package:dormlanders/widgets/date_picker_button.dart';
 import 'package:dormlanders/widgets/profile_image_widget.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 class ClientAppointment extends StatefulWidget {
   final String providerID;
@@ -32,7 +29,7 @@ class ClientAppointment extends StatefulWidget {
   final double discountedPrice;
   final double price;
   final int discount;
-  final String serviceType;
+  final String dormKeyFeatures;
 
   const ClientAppointment({
     super.key,
@@ -44,7 +41,7 @@ class ClientAppointment extends StatefulWidget {
     required this.price,
     required this.discountedPrice,
     required this.discount,
-    required this.serviceType,
+    required this.dormKeyFeatures,
   });
 
   @override
@@ -61,14 +58,13 @@ class _ClientAppointmentState extends State<ClientAppointment> {
   late bool isOnline;
   late bool isFaceToFace;
   late bool isBoth;
-  late bool _isOnlineSelected;
+  late bool _isOnlineSelected = true;
 
   late DateTime selectedDate;
   late TimeOfDay selectedTime;
   late String date = '';
   late String time = '';
   late String selectedServiceType;
-  bool _isPayInCashSelected = true;
   String referenceNumber = '';
   String providerPhoneNumber = '';
 
@@ -83,14 +79,6 @@ class _ClientAppointmentState extends State<ClientAppointment> {
 
     _checkConnection();
     _exitTimer = Timer(const Duration(seconds: 15), () {});
-    setState(() {
-      selectedServiceType = 'Online consultation';
-      isBoth =
-          widget.serviceType == 'Both Face-to-face and Online Consultation';
-      isOnline = widget.serviceType == 'Online Consultation';
-      _isOnlineSelected = isOnline || isBoth;
-      isFaceToFace = widget.serviceType == 'Face-to-face Consultation';
-    });
 
     selectedDate = DateTime.now();
     selectedTime = TimeOfDay.now();
@@ -172,7 +160,6 @@ class _ClientAppointmentState extends State<ClientAppointment> {
       clientID: clientID,
       providerID: widget.providerID,
       serviceName: widget.serviceName,
-      serviceType: selectedServiceType,
       date: date,
       time: time,
       selectedImage: selectedImage,
@@ -185,30 +172,7 @@ class _ClientAppointmentState extends State<ClientAppointment> {
         String clientAppointmentID =
             await handleAddAppointmentClient(providerAppointmentID);
 
-        final String phoneNumber =
-            '639${widget.providerInfo!['phoneNumber'].substring(1)}';
-
         // SEND MESSAGE TO THE SERVICE PROVIDER
-        final Map<String, dynamic> requestData = {
-          'recipient': phoneNumber,
-          'sender_id': 'PhilSMS',
-          'type': 'plain',
-            'message': 'DormLander Reservation: \n\nDear ${widget.providerInfo!['displayName']}, \n\n'
-              '${widget.clientInfo!['firstName']} ${widget.clientInfo!['lastName']} '
-              'has scheduled an reservation with you for ${widget.serviceName}.\nKindly refer for your DormLander app for further details. Thank you.',
-        };
-
-        const String apiUrl = 'https://app.philsms.com/api/v3/sms/send';
-
-        final http.Response response = await http.post(
-          Uri.parse(apiUrl),
-          headers: {
-            'Authorization': smsAPI,
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          body: jsonEncode(requestData),
-        );
 
         // if (response.statusCode == 200) {
         //   print('OTP sent successfully');
@@ -259,7 +223,6 @@ class _ClientAppointmentState extends State<ClientAppointment> {
         clientID: widget.providerID,
         providerID: clientID,
         serviceName: widget.serviceName,
-        serviceType: selectedServiceType,
         date: date,
         time: time,
         selectedImage: selectedImage,
@@ -526,8 +489,6 @@ class _ClientAppointmentState extends State<ClientAppointment> {
           // SIZED BOX: SPACING
           const SizedBox(height: 5),
 
-
-
           // SIZED BOX: SPACING
           const SizedBox(height: 12),
 
@@ -708,7 +669,6 @@ class _ClientAppointmentState extends State<ClientAppointment> {
           // SIZED BOX: SPACING
           const SizedBox(height: 12),
 
-
           // UPLOAD IMAGE CONTAINER
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -726,13 +686,9 @@ class _ClientAppointmentState extends State<ClientAppointment> {
               elevation: 0,
               minimumSize: const Size(double.infinity, 200),
             ),
-            onPressed: _isOnlineSelected
-                ? null
-                : () {
-                    if (selectedImage == null) {
-                      handleImageSelection();
-                    }
-                  },
+            onPressed: () {
+              handleImageSelection();
+            },
             child: selectedImage != null
                 ? Stack(
                     children: <Widget>[
@@ -814,7 +770,7 @@ class _ClientAppointmentState extends State<ClientAppointment> {
           PrimaryCustomButton(
             buttonText: "Confirm appointment",
             onPressed: () {
-              if (_isOnlineSelected == true) {
+              if (_isOnlineSelected == false) {
                 if (selectedImage == null) {
                   setState(() {
                     showFloatingSnackBar(
@@ -879,67 +835,6 @@ class _ClientAppointmentState extends State<ClientAppointment> {
   }
 
   // SERVICE TYPE BUTTON BUILDER
-  Widget _buildServiceTypeButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        // ONLINE CONSULTATION
-        Expanded(
-          child: PrimaryCustomButton(
-            buttonText: "Online",
-            onPressed: (isBoth || isOnline)
-                ? () {
-                    setState(() {
-                      selectedServiceType = 'Online consultation';
-                      _isOnlineSelected = true;
-                    });
-                  }
-                : () {},
-            buttonHeight: 50,
-            buttonColor:
-                _isOnlineSelected ? const Color(0xFF279778) : Colors.white,
-            fontWeight: FontWeight.w500,
-            fontSize: 15,
-            fontColor:
-                _isOnlineSelected ? Colors.white : const Color(0xFF3C4D48),
-            elevation: 0,
-            borderRadius: 7,
-            borderColor: _isOnlineSelected ? Colors.transparent : Colors.grey,
-            borderWidth: 1.5,
-          ),
-        ),
-
-        // SIZED BOX: SPACING
-        const SizedBox(width: 12),
-
-        // FACE TO FACE CONSULTATION
-        Expanded(
-          child: PrimaryCustomButton(
-            buttonText: "Face-to-face",
-            onPressed: (isBoth || isFaceToFace)
-                ? () {
-                    setState(() {
-                      selectedServiceType = 'Face-to-face consultation';
-                      _isOnlineSelected = false;
-                    });
-                  }
-                : () {},
-            buttonHeight: 50,
-            buttonColor:
-                !_isOnlineSelected ? const Color(0xFF279778) : Colors.white,
-            fontWeight: FontWeight.w500,
-            fontSize: 15,
-            fontColor:
-                !_isOnlineSelected ? Colors.white : const Color(0xFF3C4D48),
-            elevation: 0,
-            borderRadius: 7,
-            borderWidth: 1.5,
-            borderColor: !_isOnlineSelected ? Colors.transparent : Colors.grey,
-          ),
-        ),
-      ],
-    );
-  }
 
   String generateReferenceNumber() {
     // Logic to generate a reference number (You can customize this as needed)

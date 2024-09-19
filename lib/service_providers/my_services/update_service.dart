@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,9 +40,11 @@ class _UpdateServiceState extends State<UpdateService> {
   final _currentTenantsController = TextEditingController();
   final _priceController = TextEditingController();
   final _discountController = TextEditingController();
-  final _serviceTypeController = TextEditingController();
+  final _dormKeyFeaturesController = TextEditingController();
   final _imageURLController = TextEditingController();
-
+  final _kitchenViewController = TextEditingController();
+  final _comfortRoomViewController = TextEditingController();
+  final _bedRoomViewController = TextEditingController();
 
   // FORM KEY DECLARATION
   final formKey = GlobalKey<FormState>();
@@ -53,20 +54,24 @@ class _UpdateServiceState extends State<UpdateService> {
   String? selectedValue;
   bool isLoading = true;
   PlatformFile? selectedImage;
+  PlatformFile? kitchenView;
+  PlatformFile? comfortRoomView;
+  PlatformFile? bedRoomView;
   String? imageURL;
+  String? kitchenViewURL;
+  String? comfortRoomViewURL;
+  String? bedRoomViewURL;
   String? oldImageURL;
-
-  // LIST FOR SERVICE TYPE
-  late List<String> serviceType = [
-    'Free WiFi',
-    'No Free WiFi',
-  ];
+  String? oldKitchenViewURL;
+  String? oldComfortRoomViewURL;
+  String? oldBedRoomViewURL;
 
   // FOCUS NODE DECLARATION
   final _serviceNameFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
   final _priceFocusNode = FocusNode();
   final _discountFocusNode = FocusNode();
+  final _dormKeyFeaturesNode = FocusNode();
   final _maximumTenantsFocusNode = FocusNode();
   final _currentTenantsFocusNode = FocusNode();
 
@@ -92,8 +97,11 @@ class _UpdateServiceState extends State<UpdateService> {
     _discountController.dispose();
     _maximumTenantsController.dispose();
     _currentTenantsController.dispose();
-    _serviceTypeController.dispose();
+    _dormKeyFeaturesController.dispose();
     _imageURLController.dispose();
+    _kitchenViewController.dispose();
+    _comfortRoomViewController.dispose();
+    _bedRoomViewController.dispose();
     _serviceDescriptionController.removeListener(_enforceWordLimit);
     super.dispose();
   }
@@ -101,7 +109,7 @@ class _UpdateServiceState extends State<UpdateService> {
   // CHECK CONNECTION
   Future<void> _checkConnection() async {
     _connectionSubscription = InternetConnectionChecker().onStatusChange.listen(
-          (status) {
+      (status) {
         // Check if the context is still mounted
         if (!mounted) return;
 
@@ -157,8 +165,6 @@ class _UpdateServiceState extends State<UpdateService> {
     // );
   }
 
-
-
   // METHOD THAT WILL GET THE PROVIDER'S SERVICES
   void getUserServices() async {
     setState(() {
@@ -166,19 +172,31 @@ class _UpdateServiceState extends State<UpdateService> {
     });
 
     try {
-      final data = await FirebaseService.getUserServices(widget.receiveServiceID);
+      final data =
+          await FirebaseService.getUserServices(widget.receiveServiceID);
 
       if (mounted) {
+
+
         setState(() {
           isAvailable = data['availability'] ?? false;
-          selectedValue = data['serviceType'];
-          _serviceTypeController.text = selectedValue!;
-          if (data['imageURL'] != null) {
-            imageURL = data['imageURL'];
-            oldImageURL = imageURL;
-          } else {
-            imageURL = "images/no_image.jpeg";
-          }
+          selectedValue = data['dormKeyFeatures'];
+          _dormKeyFeaturesController.text = selectedValue!;
+
+          imageURL = data['imageURL'] ?? 'images/no_images.jpeg';
+          oldImageURL = imageURL;
+
+          kitchenViewURL = data['kitchenView'] ?? 'images/no_images.jpeg';
+          oldKitchenViewURL = kitchenViewURL;
+
+          comfortRoomViewURL = data['comfortRoomView'] ?? 'images/no_images.jpeg';
+          oldComfortRoomViewURL = comfortRoomViewURL;
+
+          bedRoomViewURL = data['bedRoomView'] ?? 'images/no_images.jpeg';
+          oldBedRoomViewURL = bedRoomViewURL;
+
+
+
 
           // ASSIGN INITIAL VALUE TO THE CONTROLLERS
           _availabilityController.text = data['availability'].toString();
@@ -188,9 +206,11 @@ class _UpdateServiceState extends State<UpdateService> {
           _currentTenantsController.text = data['currentTenant'].toString();
           _priceController.text = data['price'].toString();
           _discountController.text = data['discount'].toString();
-          _serviceTypeController.text = data['serviceType'];
+          _dormKeyFeaturesController.text = data['dormKeyFeatures'].toString();
           _imageURLController.text = data['imageURL'];
-
+          _kitchenViewController.text = data['kitchenView'];
+          _comfortRoomViewController.text = data['comfortRoomView'];
+          _bedRoomViewController.text = data['bedRoomView'];
           isLoading = false;
         });
       }
@@ -203,8 +223,6 @@ class _UpdateServiceState extends State<UpdateService> {
     }
   }
 
-
-
   // METHOD THAT WILL HANDLE THE IMAGE SELECTION FROM THE LOCAL STORAGE
   void handleImageSelection() async {
     final selected = await ProviderServices.selectImage();
@@ -215,8 +233,40 @@ class _UpdateServiceState extends State<UpdateService> {
     }
   }
 
+  // KITCHEN VIEW IMAGE
+  void kitchenViewSelection() async {
+    final selected = await ProviderServices.selectImage();
+    if (selected != null) {
+      setState(() {
+        kitchenView = selected;
+      });
+    }
+  }
+
+  // COMFORT ROOM VIEW IMAGE
+  void comfortRoomViewSelection() async {
+    final selected = await ProviderServices.selectImage();
+    if (selected != null) {
+      setState(() {
+        comfortRoomView = selected;
+      });
+    }
+  }
+
+  // BED ROOM VIEW IMAGE
+  void bedRoomViewSelection() async {
+    final selected = await ProviderServices.selectImage();
+    if (selected != null) {
+      setState(() {
+        bedRoomView = selected;
+      });
+    }
+  }
+
   // METHOD THAT WILL UPDATE THE SERVICE'S DATA
   void handleUpdateService() async {
+
+
     await FirebaseService.updateService(
       context: context,
       formKey: formKey,
@@ -227,10 +277,16 @@ class _UpdateServiceState extends State<UpdateService> {
       currentTenants: int.tryParse(_currentTenantsController.text) ?? 0,
       price: double.tryParse(_priceController.text) ?? 0.0,
       discount: int.tryParse(_discountController.text) ?? 0,
-      serviceType: _serviceTypeController.text,
+      dormKeyFeatures: _dormKeyFeaturesController.text,
       serviceID: widget.receiveServiceID,
       selectedImage: selectedImage,
+      kitchenView: kitchenView,
+      comfortRoomView: comfortRoomView,
+      bedRoomView: bedRoomView,
       oldImageURL: oldImageURL,
+      oldKitchenViewURL: oldKitchenViewURL,
+      oldComfortRoomViewURL: oldComfortRoomViewURL,
+      oldBedRoomViewURL: oldBedRoomViewURL,
     );
   }
 
@@ -248,7 +304,7 @@ class _UpdateServiceState extends State<UpdateService> {
     if (wordCount > maxWordCount) {
       // Truncate the text to the maximum word count
       List<String> words =
-      text.split(RegExp(r'\s+')).where((word) => word.isNotEmpty).toList();
+          text.split(RegExp(r'\s+')).where((word) => word.isNotEmpty).toList();
       String newText =
           '${words.take(maxWordCount).join(' ')} '; // Add a space at the end for better UX
       _serviceDescriptionController.value = TextEditingValue(
@@ -257,7 +313,6 @@ class _UpdateServiceState extends State<UpdateService> {
       );
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -317,7 +372,7 @@ class _UpdateServiceState extends State<UpdateService> {
                   height: 60,
                   child: const LoadingIndicator(
                     indicatorType: Indicator.ballSpinFadeLoader,
-                    colors: [Color(0xFF0D6D52)],
+                    colors: [Color(0xFF193147)],
                   ),
                 ),
               )
@@ -354,11 +409,11 @@ class _UpdateServiceState extends State<UpdateService> {
                                 border: Border.all(
                                   width: 1.5,
                                   color: isAvailable
-                                      ? const Color(0xFF0D6D52)
+                                      ? const Color(0xFF193147)
                                       : const Color(0xFFe91b4f),
                                 ),
                                 color: isAvailable
-                                    ? const Color(0xFF0D6D52).withOpacity(0.1)
+                                    ? const Color(0xFF193147).withOpacity(0.1)
                                     : const Color(0xFFe91b4f).withOpacity(0.1)),
                             height: 60,
                             padding: const EdgeInsets.only(left: 10, right: 10),
@@ -374,7 +429,7 @@ class _UpdateServiceState extends State<UpdateService> {
                                       fontSize: 16,
                                       fontWeight: FontWeight.normal,
                                       color: isAvailable
-                                          ? const Color(0xFF0D6D52)
+                                          ? const Color(0xFF193147)
                                           : const Color(0xFFe91b4f),
                                     ),
                                   ),
@@ -390,7 +445,7 @@ class _UpdateServiceState extends State<UpdateService> {
                                             value.toString();
                                       });
                                     },
-                                    activeColor: const Color(0xFF0D6D52),
+                                    activeColor: const Color(0xFF193147),
                                     inactiveThumbColor: const Color(0xFF242424),
                                     inactiveTrackColor: Colors.grey[300],
                                   ),
@@ -473,17 +528,20 @@ class _UpdateServiceState extends State<UpdateService> {
 
                               if (wordCount > maxWordCount) {
                                 // Truncate the input text to the maximum word count
-                                List<String> words =
-                                value.split(RegExp(r'\s+')).where((word) => word.isNotEmpty).toList();
+                                List<String> words = value
+                                    .split(RegExp(r'\s+'))
+                                    .where((word) => word.isNotEmpty)
+                                    .toList();
                                 String truncatedText =
                                     '${words.take(maxWordCount).join(' ')} '; // Add a space at the end for better UX
-                                _serviceDescriptionController.text = truncatedText;
+                                _serviceDescriptionController.text =
+                                    truncatedText;
                                 return "Description must be less than $maxWordCount words";
                               }
                               return null;
                             },
                             hintText: "Description here...",
-                            minLines: 1,
+                            minLines: 2,
                             maxLines: 5,
                             isPassword: false,
                           ),
@@ -517,7 +575,8 @@ class _UpdateServiceState extends State<UpdateService> {
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.digitsOnly,
                             ],
-                            validatorText: "Maximum number of tenants is required",
+                            validatorText:
+                                "Maximum number of tenants is required",
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return "Maximum number of tenants is required";
@@ -529,7 +588,6 @@ class _UpdateServiceState extends State<UpdateService> {
                             maxLines: 1,
                             isPassword: false,
                           ),
-
 
                           // CURRENT NUMBER OF TENANTS
                           // SIZED BOX: SPACING
@@ -556,17 +614,21 @@ class _UpdateServiceState extends State<UpdateService> {
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.digitsOnly,
                             ],
-                            validatorText: "Current number of tenants is required",
+                            validatorText:
+                                "Current number of tenants is required",
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return "Current number of tenants is required";
                               }
 
                               // Parse the data
-                              final currentTenants = int.tryParse(_currentTenantsController.text);
-                              final maximumTenants = int.tryParse(_maximumTenantsController.text);
+                              final currentTenants =
+                                  int.tryParse(_currentTenantsController.text);
+                              final maximumTenants =
+                                  int.tryParse(_maximumTenantsController.text);
 
-                              if (currentTenants == null || maximumTenants == null) {
+                              if (currentTenants == null ||
+                                  maximumTenants == null) {
                                 return "Invalid input";
                               }
 
@@ -678,9 +740,12 @@ class _UpdateServiceState extends State<UpdateService> {
                           // SIZED BOX: SPACING
                           const SizedBox(height: 10),
 
-                          // LABEL: SERVICE DESCRIPTION
+                          // SIZED BOX: SPACING
+                          const SizedBox(height: 2),
+
+                          // LABEL: DORM KEY FEATURES
                           const CustomTextDisplay(
-                            receivedText: "Service Type",
+                            receivedText: "Dorm Key Feature",
                             receivedTextSize: 15,
                             receivedTextWeight: FontWeight.w500,
                             receivedLetterSpacing: 0,
@@ -690,105 +755,47 @@ class _UpdateServiceState extends State<UpdateService> {
                           // SIZED BOX: SPACING
                           const SizedBox(height: 2),
 
-                          // DROP DOWN: SERVICE TYPE
-                          DropdownButtonFormField2<String>(
-                            value: selectedValue,
-                            isExpanded: true,
-                            decoration: InputDecoration(
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 16),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Color(0xFF0D6D52),
-                                  width: 1.5,
-                                ),
-                              ),
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: const BorderSide(
-                                  color: Color(0xFFe91b4f),
-                                  width: 2,
-                                ),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: const BorderSide(
-                                  color: Color(0xFFe91b4f),
-                                  width: 2.0,
-                                ),
-                              ),
-                              fillColor: Colors.white,
-                              filled: true,
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Color(0xFFBDBDC7),
-                                  // Set color for enabled state
-                                  width: 1.5, // Set width for enabled state
-                                ),
-                              ),
-                            ),
-                            hint: Text(
-                              selectedValue ?? 'Service Type',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal,
-                                color: selectedValue != 'Service Type'
-                                    ? Colors.black
-                                    : const Color(0xFF6c7687),
-                              ),
-                            ),
-                            items: serviceType
-                                .map((item) => DropdownMenuItem<String>(
-                                      value: item,
-                                      child: Text(
-                                        item,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.normal,
-                                          color: Color(0xFF3C3C40),
-                                        ),
-                                      ),
-                                    ))
-                                .toList(),
+                          // TEXT FIELD: DORM KEY FEATURES
+                          // TEXT FIELD: DESCRIPTION
+                          CustomTextField(
+                            controller: _dormKeyFeaturesController,
+                            currentFocusNode: _dormKeyFeaturesNode,
+                            nextFocusNode: null,
+                            keyBoardType: TextInputType.multiline,
+                            inputFormatters: null,
+                            validatorText: "Description is required",
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please select service type.';
+                              if (value!.isEmpty) {
+                                return "Description is required";
+                              }
+                              // Split the input string into words using spaces and count them
+                              int wordCount = value
+                                  .trim()
+                                  .split(RegExp(r'\s+'))
+                                  .where((word) => word.isNotEmpty)
+                                  .length;
+
+                              // DEFINE MAXIMUM ALLOWED WORDS
+                              int maxWordCount = 30;
+
+                              if (wordCount > maxWordCount) {
+                                // Truncate the input text to the maximum word count
+                                List<String> words = value
+                                    .split(RegExp(r'\s+'))
+                                    .where((word) => word.isNotEmpty)
+                                    .toList();
+                                String truncatedText =
+                                    '${words.take(maxWordCount).join(' ')} '; // Add a space at the end for better UX
+                                _serviceDescriptionController.text =
+                                    truncatedText;
+                                return "Dorm key features must be less than $maxWordCount words";
                               }
                               return null;
                             },
-                            onChanged: (value) {
-                              //Do something when selected item is changed.
-                              setState(() {
-                                selectedValue = value.toString();
-                                _serviceTypeController.text = value.toString();
-                              });
-                            },
-                            onSaved: (value) {
-                              _serviceTypeController.text = value.toString();
-                            },
-                            buttonStyleData: const ButtonStyleData(
-                              padding: EdgeInsets.only(right: 15),
-                            ),
-                            iconStyleData: const IconStyleData(
-                              icon: Icon(
-                                Icons.arrow_drop_down,
-                                color: Color(0xFF3C3C40),
-                              ),
-                              iconSize: 26,
-                            ),
-                            dropdownStyleData: DropdownStyleData(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            menuItemStyleData: const MenuItemStyleData(
-                              padding: EdgeInsets.symmetric(horizontal: 17),
-                            ),
+                            hintText: "Dormitory's key features...",
+                            minLines: 2,
+                            maxLines: 5,
+                            isPassword: false,
                           ),
 
                           // SIZED BOX: SPACING
@@ -796,7 +803,7 @@ class _UpdateServiceState extends State<UpdateService> {
 
                           // LABEL: DISPLAY PHOTO
                           const CustomTextDisplay(
-                            receivedText: "Display photo",
+                            receivedText: "Front View",
                             receivedTextSize: 15,
                             receivedTextWeight: FontWeight.w500,
                             receivedLetterSpacing: 0,
@@ -865,6 +872,352 @@ class _UpdateServiceState extends State<UpdateService> {
                                             setState(() {
                                               selectedImage = null;
                                               imageURL = null;
+                                            });
+                                          },
+                                          child: Container(
+                                            decoration: const BoxDecoration(
+                                              color: Colors.black54,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: Container(
+                                              margin: const EdgeInsets.all(5),
+                                              child: const Icon(
+                                                Icons.clear_rounded,
+                                                color: Color(0xFFF5F5F5),
+                                                size: 15,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : const Center(
+                                    child: Column(
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.add_a_photo_rounded,
+                                          color: Colors.grey,
+                                        ),
+                                        CustomTextDisplay(
+                                          receivedText: "Add photo",
+                                          receivedTextSize: 15,
+                                          receivedTextWeight: FontWeight.normal,
+                                          receivedLetterSpacing: 0,
+                                          receivedTextColor: Colors.grey,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                          ),
+
+                          // KITCHEN VIEW
+                          // SIZED BOX: SPACING
+                          const SizedBox(height: 10),
+
+                          // LABEL: DISPLAY PHOTO
+                          const CustomTextDisplay(
+                            receivedText: "Kitchen View",
+                            receivedTextSize: 15,
+                            receivedTextWeight: FontWeight.w500,
+                            receivedLetterSpacing: 0,
+                            receivedTextColor: Color(0xFF242424),
+                          ),
+
+                          // SIZED BOX: SPACING
+                          const SizedBox(height: 2),
+
+                          // UPLOAD IMAGE CONTAINER
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              backgroundColor: Colors.white,
+                              foregroundColor: const Color(0xFFBDBDC7),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              side: const BorderSide(
+                                color: Color(0xFFBDBDC7),
+                                // Set color for enabled state
+                                width: 1.5, // Set width for enabled state
+                              ),
+                              elevation: 0,
+                              minimumSize: const Size(double.infinity, 120),
+                            ),
+                            onPressed: () {
+                              if (kitchenView == null &&
+                                  kitchenViewURL == null) {
+                                kitchenViewSelection();
+                              }
+                            },
+                            child: kitchenView != null || kitchenViewURL != null
+                                ? Stack(
+                                    children: <Widget>[
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: kitchenView != null
+                                            ? Image.file(
+                                                File(kitchenView!.path!),
+                                                // Use the path of the selected image
+                                                width: double.infinity,
+                                                height: 120,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.network(
+                                                kitchenViewURL!,
+                                                width: double.infinity,
+                                                height: 120,
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (context, error,
+                                                    stackTrace) {
+                                                  return Image.asset(
+                                                    "images/no_image.jpeg",
+                                                    fit: BoxFit.cover,
+                                                    height: 120,
+                                                    width: double.infinity,
+                                                  );
+                                                },
+                                              ),
+                                      ),
+                                      Positioned(
+                                        right: 11,
+                                        top: 10,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              kitchenView = null;
+                                              kitchenViewURL = null;
+                                            });
+                                          },
+                                          child: Container(
+                                            decoration: const BoxDecoration(
+                                              color: Colors.black54,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: Container(
+                                              margin: const EdgeInsets.all(5),
+                                              child: const Icon(
+                                                Icons.clear_rounded,
+                                                color: Color(0xFFF5F5F5),
+                                                size: 15,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : const Center(
+                                    child: Column(
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.add_a_photo_rounded,
+                                          color: Colors.grey,
+                                        ),
+                                        CustomTextDisplay(
+                                          receivedText: "Add photo",
+                                          receivedTextSize: 15,
+                                          receivedTextWeight: FontWeight.normal,
+                                          receivedLetterSpacing: 0,
+                                          receivedTextColor: Colors.grey,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                          ),
+
+                          // COMFORT ROOM VIEW
+                          // SIZED BOX: SPACING
+                          const SizedBox(height: 10),
+
+                          // LABEL: DISPLAY PHOTO
+                          const CustomTextDisplay(
+                            receivedText: "Comfort Room View",
+                            receivedTextSize: 15,
+                            receivedTextWeight: FontWeight.w500,
+                            receivedLetterSpacing: 0,
+                            receivedTextColor: Color(0xFF242424),
+                          ),
+
+                          // SIZED BOX: SPACING
+                          const SizedBox(height: 2),
+
+                          // UPLOAD KITCHEN VIEW
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              backgroundColor: Colors.white,
+                              foregroundColor: const Color(0xFFBDBDC7),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              side: const BorderSide(
+                                color: Color(0xFFBDBDC7),
+                                // Set color for enabled state
+                                width: 1.5, // Set width for enabled state
+                              ),
+                              elevation: 0,
+                              minimumSize: const Size(double.infinity, 120),
+                            ),
+                            onPressed: () {
+                              if (comfortRoomView == null &&
+                                  comfortRoomViewURL == null) {
+                                comfortRoomViewSelection();
+                              }
+                            },
+                            child: comfortRoomView != null ||
+                                    comfortRoomViewURL != null
+                                ? Stack(
+                                    children: <Widget>[
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: comfortRoomView != null
+                                            ? Image.file(
+                                                File(comfortRoomView!.path!),
+                                                // Use the path of the selected image
+                                                width: double.infinity,
+                                                height: 120,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.network(
+                                                comfortRoomViewURL!,
+                                                width: double.infinity,
+                                                height: 120,
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (context, error,
+                                                    stackTrace) {
+                                                  return Image.asset(
+                                                    "images/no_image.jpeg",
+                                                    fit: BoxFit.cover,
+                                                    height: 120,
+                                                    width: double.infinity,
+                                                  );
+                                                },
+                                              ),
+                                      ),
+                                      Positioned(
+                                        right: 11,
+                                        top: 10,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              comfortRoomView = null;
+                                              comfortRoomViewURL = null;
+                                            });
+                                          },
+                                          child: Container(
+                                            decoration: const BoxDecoration(
+                                              color: Colors.black54,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: Container(
+                                              margin: const EdgeInsets.all(5),
+                                              child: const Icon(
+                                                Icons.clear_rounded,
+                                                color: Color(0xFFF5F5F5),
+                                                size: 15,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : const Center(
+                                    child: Column(
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.add_a_photo_rounded,
+                                          color: Colors.grey,
+                                        ),
+                                        CustomTextDisplay(
+                                          receivedText: "Add photo",
+                                          receivedTextSize: 15,
+                                          receivedTextWeight: FontWeight.normal,
+                                          receivedLetterSpacing: 0,
+                                          receivedTextColor: Colors.grey,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                          ),
+
+                          // KITCHEN VIEW
+                          // SIZED BOX: SPACING
+                          const SizedBox(height: 10),
+
+                          // LABEL: DISPLAY PHOTO
+                          const CustomTextDisplay(
+                            receivedText: "Bed Room View",
+                            receivedTextSize: 15,
+                            receivedTextWeight: FontWeight.w500,
+                            receivedLetterSpacing: 0,
+                            receivedTextColor: Color(0xFF242424),
+                          ),
+
+                          // SIZED BOX: SPACING
+                          const SizedBox(height: 2),
+
+                          // UPLOAD KITCHEN VIEW
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              backgroundColor: Colors.white,
+                              foregroundColor: const Color(0xFFBDBDC7),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              side: const BorderSide(
+                                color: Color(0xFFBDBDC7),
+                                // Set color for enabled state
+                                width: 1.5, // Set width for enabled state
+                              ),
+                              elevation: 0,
+                              minimumSize: const Size(double.infinity, 120),
+                            ),
+                            onPressed: () {
+                              if (bedRoomView == null &&
+                                  bedRoomViewURL == null) {
+                                bedRoomViewSelection();
+                              }
+                            },
+                            child: bedRoomView != null || bedRoomViewURL != null
+                                ? Stack(
+                                    children: <Widget>[
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: bedRoomView != null
+                                            ? Image.file(
+                                                File(bedRoomView!.path!),
+                                                // Use the path of the selected image
+                                                width: double.infinity,
+                                                height: 120,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.network(
+                                                bedRoomViewURL!,
+                                                width: double.infinity,
+                                                height: 120,
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (context, error,
+                                                    stackTrace) {
+                                                  return Image.asset(
+                                                    "images/no_image.jpeg",
+                                                    fit: BoxFit.cover,
+                                                    height: 120,
+                                                    width: double.infinity,
+                                                  );
+                                                },
+                                              ),
+                                      ),
+                                      Positioned(
+                                        right: 11,
+                                        top: 10,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              bedRoomView = null;
+                                              bedRoomViewURL = null;
                                             });
                                           },
                                           child: Container(
